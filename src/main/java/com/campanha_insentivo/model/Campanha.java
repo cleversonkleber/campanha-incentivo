@@ -10,6 +10,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "CAMPANHA")
@@ -20,13 +24,25 @@ public class Campanha implements Serializable{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "NOME", nullable = false, unique = true)
+
+    @NotBlank(message = "O nome da campanha é obrigatório.") 
+    @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres.")
+    @Column(name = "NOME_CAMPANHA", nullable = false, unique = true)
     private String nome;
+
     @Column(name = "DATA_INICIO", nullable = false)
+    @NotNull(message = "A data de início é obrigatória.")
+    @FutureOrPresent(message = "A data de início não pode ser no passado.")
     private LocalDateTime dataInicio;
+
     @Column(name = "DATA_FIM", nullable = false)
+    @NotNull(message = "A data de término é obrigatória.")
+    @FutureOrPresent(message = "A data de término não pode ser no passado.") 
     private LocalDateTime dataFim;
+
     @Column(name = "DESCRICAO", nullable = false, length = 255)
+    @NotBlank(message = "A descrição é obrigatória.")
+    @Size(max = 255, message = "A descrição não pode exceder 255 caracteres.")
     private String descricao;
 
     public Campanha() {
