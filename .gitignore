@@ -19,4 +19,4 @@ application-*.properties # Or specific files like application-dev.properties
 # System files
 .DS_Store
 Thumbs.db
-application.yml
+.env
