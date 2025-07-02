@@ -21,9 +21,9 @@ public class Participante implements Serializable{
     private Long id;
     @Column(name = "NOME_COMPLETO", nullable = false, length = 45)
     private String nome_completo;
-    @Column(name = "CPF", nullable = false, length = 255)
+    @Column(name = "CPF", nullable = false, length = 255, unique = true)
     private String cpf;
-    @Column(name = "EMAIL", nullable = false, length = 255)
+    @Column(name = "EMAIL", nullable = false, length = 255, unique = true)
     private String email;
 
     
