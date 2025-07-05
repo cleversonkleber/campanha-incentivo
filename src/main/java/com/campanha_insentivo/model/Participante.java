@@ -1,6 +1,7 @@
 package com.campanha_insentivo.model;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -90,6 +91,16 @@ public class Participante implements Serializable{
     @Override
     public String toString() {
         return "Participante [id=" + id + ", nome=" + nome_completo + ", cpf=" + cpf + ", email=" + email + "]";
+    }
+
+    public Campanha criarParticipante(Participante participante) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'criarParticipante'");
+    }
+
+    public List<Participante> findAll() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
 
