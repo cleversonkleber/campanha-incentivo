@@ -44,6 +44,13 @@ public class Participante implements Serializable{
         this.cpf = cpf;
         this.email = email;
     }
+
+    public Participante(String nome_completo, String cpf, String email) {
+         this.nome_completo = nome_completo;
+        this.cpf = cpf;
+        this.email = email;
+    }
+    
     public Long getId() {
         return id;
     }
