@@ -1,14 +1,31 @@
+# yaml spring: config: import: optional:file:.env[.properties]
+
+# spring:
+#   config:
+#         import: optional:file:.env[.properties]
+#   datasource:
+#     driver-class-name: com.mysql.cj.jdbc.Driver
+#     url: ${DB_URL}
+#     username: ${DB_USERNAME}
+#     password: ${DB_PASSWORD}
+#   jpa:
+#     hibernate:
+#       ddl-auto: validate
+#     properties:
+#       hibernate:
+#         dialect: org.hibernate.dialect.MySQL8Dialect
+#     show-sql: false
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://mysql-campanha:3306/campanha_insentivo_db?useTimezone=true&serverTimezone=UTC
+    username: root
+    password: root
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: false
-

@@ -11,8 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "PARTICIPANTE")
@@ -24,18 +23,13 @@ public class Participante implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O nome do participante é obrigatório.") 
-    @Size(min = 2, max = 45, message = "O nome deve ter entre 3 e 100 caracteres.")
     @Column(name = "NOME_COMPLETO", nullable = false, length = 45)
     private String nome_completo;
 
-    @NotBlank(message = "O nome do participante é obrigatório.") 
-    @Size(min = 11, max = 14, message = "O CPF deve conter no mínio 11 e 14 caracteres.")
+
     @Column(name = "CPF", nullable = false, length = 255, unique = true)
     private String cpf;
 
-    @NotBlank(message = "O nome do participante é obrigatório.") 
-    @Size(min = 5, max = 45, message = "O nome deve ter entre 3 e 250 caracteres.")
     @Column(name = "EMAIL", nullable = false, length = 255, unique = true)
     @Email
     private String email;

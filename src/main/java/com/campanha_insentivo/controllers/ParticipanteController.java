@@ -10,21 +10,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.campanha_insentivo.model.Campanha;
 import com.campanha_insentivo.model.Participante;
+import com.campanha_insentivo.services.ParticipanteService;
 
 @RestController
 @RequestMapping("/participante")
 public class ParticipanteController {
 
     @Autowired
-    private Participante participanteService;
+    private ParticipanteService participanteService;
 
     @PostMapping(
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Campanha criarParticipante(@RequestBody Participante participante){
+    public Participante criarParticipante(@RequestBody Participante participante){
         return participanteService.criarParticipante(participante);
     }
 
