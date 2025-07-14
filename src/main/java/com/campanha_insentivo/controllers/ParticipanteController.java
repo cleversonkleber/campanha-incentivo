@@ -38,6 +38,7 @@ public class ParticipanteController {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     public List<ParticipanteDTO> findAll() throws Exception{
+
         return participanteService.findAll();
     }
 }

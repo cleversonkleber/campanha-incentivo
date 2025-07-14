@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.campanha_insentivo.dtos.CampanhaDto;
-import com.campanha_insentivo.model.Campanha;
 import com.campanha_insentivo.services.CampanhaService;
 
 @RestController
