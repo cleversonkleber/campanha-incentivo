@@ -2,6 +2,7 @@ package com.campanha_insentivo.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import com.campanha_insentivo.repositories.ParticipanteRepository;
 @Service
 public class ParticipanteService {
 
+    private Logger logger = Logger.getLogger(CampanhaService.class.getName());
+
     @Autowired
     private ParticipanteRepository repository;
 
@@ -26,17 +29,22 @@ public class ParticipanteService {
     }
 
     public ParticipanteDTO criarParticipante(ParticipanteDTO dto) {
+        
         Optional<Participante> optional = repository.findByCpf(dto.cpf());
         if (optional.isPresent()) {
+            logger.warning("Existe um participante com o cpf: "+ dto.cpf());
             throw new ResourceExistsException(
                 "Existe um participante com o cpf: "+ dto.cpf()
             );
+            
         }
+        logger.info("Criando participante!");
         Participante participante = repository.save(mapper.toEntity(dto));
         return mapper.tDto(participante);
     }
 
     public List<ParticipanteDTO> findAll() {
+         logger.info("Listando todos os participantes.");
         return repository.findAll()
                .stream()
                .map(mapper::tDto)
