@@ -6,7 +6,7 @@ import org.mapstruct.factory.Mappers;
 import com.campanha_insentivo.dtos.ParticipanteDTO;
 import com.campanha_insentivo.model.Participante;
 
-@Mapper(componentModel = "string")
+@Mapper(componentModel = "spring")
 public interface ParticipanteMapper {
     ParticipanteMapper INSTANCE = Mappers.getMapper(ParticipanteMapper.class);
     Participante toEntity(ParticipanteDTO dto);
