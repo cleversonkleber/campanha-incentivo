@@ -19,13 +19,14 @@ public class ParticipanteService {
 
     private Logger logger = Logger.getLogger(CampanhaService.class.getName());
 
-    @Autowired
+    
     private ParticipanteRepository repository;
 
     private ParticipanteMapper mapper;
 
-    public ParticipanteService(ParticipanteMapper mapper){
+    public ParticipanteService(ParticipanteRepository repository, ParticipanteMapper mapper){
         this.mapper = mapper;
+        this.repository = repository;
     }
 
     public ParticipanteDTO criarParticipante(ParticipanteDTO dto) {
@@ -36,7 +37,7 @@ public class ParticipanteService {
             throw new ResourceExistsException(
                 "Existe um participante com o cpf: "+ dto.cpf()
             );
-            
+        
         }
         logger.info("Criando participante!");
         Participante participante = repository.save(mapper.toEntity(dto));

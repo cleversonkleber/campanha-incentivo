@@ -38,7 +38,7 @@ public class Campanha implements Serializable{
     public Campanha() {
     }
     
-    public Campanha(Long id, String nome, LocalDateTime dataInicio, LocalDateTime dataFim, String descricao) {
+    public Campanha(Long id, String nome, LocalDateTime dataInicio, LocalDateTime dataFim, String descricao, Object object) {
         this.id = id;
         this.nome = nome;
         this.dataInicio = dataInicio;

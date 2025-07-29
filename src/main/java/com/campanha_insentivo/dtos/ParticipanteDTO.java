@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record ParticipanteDTO(
+    
     @NotBlank(message = "O nome do participante é obrigatório.") 
     @Size(min = 2, max = 45, message = "O nome deve ter entre 3 e 100 caracteres.")
     String nome_completo,

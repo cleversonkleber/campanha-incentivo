@@ -17,14 +17,14 @@ public class CampanhaService {
 
     private Logger logger = Logger.getLogger(CampanhaService.class.getName());
 
-    @Autowired
     private CampanhaRepository repository;
 
     private CampanhaMapper mapper;
     
 
-    public CampanhaService(CampanhaMapper mapper) {
-        this.mapper = mapper;
+    public CampanhaService(CampanhaRepository repository, CampanhaMapper mapper) {
+        this.repository = repository; 
+        this.mapper = mapper;         
     }
 
 
