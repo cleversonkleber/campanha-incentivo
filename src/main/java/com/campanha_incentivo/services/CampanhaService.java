@@ -1,0 +1,46 @@
+package com.campanha_incentivo.services;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import java.util.logging.Logger;
+
+import org.springframework.stereotype.Service;
+
+import com.campanha_incentivo.dtos.CampanhaDto;
+import com.campanha_incentivo.mapper.CampanhaMapper;
+import com.campanha_incentivo.model.Campanha;
+import com.campanha_incentivo.repositories.CampanhaRepository;
+
+@Service
+public class CampanhaService {
+
+    private Logger logger = Logger.getLogger(CampanhaService.class.getName());
+
+    private CampanhaRepository repository;
+
+    private CampanhaMapper mapper;
+    
+
+    public CampanhaService(CampanhaRepository repository, CampanhaMapper mapper) {
+        this.repository = repository; 
+        this.mapper = mapper;         
+    }
+
+
+    public CampanhaDto criarCampanha(CampanhaDto dto) {
+        logger.info("Criando campanha!");
+        Campanha campanha = repository.save(mapper.toEntity(dto));
+        return mapper.tDto(campanha);
+    }
+
+    public List<CampanhaDto> findAll() {
+        logger.info("Listar todas as campanhas!");
+        return repository.findAll()
+                .stream()
+                .map(mapper::tDto)
+                .collect(Collectors.toList());
+    }
+
+
+}

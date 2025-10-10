@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com</groupId>
-    <artifactId>campanha-insentivo</artifactId>
+    <artifactId>campanha-incentivo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>campanha-insentivo</name>
     <description>Sistem de campanha de insentivo</description>
