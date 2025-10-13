@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.campanha_incentivo.dtos.ParticipanteDTO;
-import com.campanha_incentivo.model.Participante;
+import com.campanha_incentivo.entities.Participante;
 
 @Mapper(componentModel = "spring")
 public interface ParticipanteMapper {

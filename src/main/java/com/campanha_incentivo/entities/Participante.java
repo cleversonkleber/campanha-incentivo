@@ -1,4 +1,4 @@
-package com.campanha_incentivo.model;
+package com.campanha_incentivo.entities;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,6 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 
@@ -21,7 +24,7 @@ public class Participante implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_participante;
 
     @Column(name = "NOME_COMPLETO", nullable = false, length = 45)
     private String nome_completo;
@@ -34,15 +37,23 @@ public class Participante implements Serializable{
     @Email
     private String email;
 
+    @OneToMany
+    @JoinTable(name = "TB_EVENTO",
+	     joinColumns = @JoinColumn(name = "id_evento"),
+	     inverseJoinColumns = @JoinColumn(name = "id_participante"))
+    @Column(name = "EVENTO",nullable = true)
+    private List<Evento> eventos; 
+
     
     public Participante() {
     }
 
-    public Participante(Long id, String nome_completo, String cpf, String email) {
-        this.id = id;
+    public Participante(Long id_participante, String nome_completo, String cpf, String email, List<Evento> eventos) {
+        this.id_participante = id_participante;
         this.nome_completo = nome_completo;
         this.cpf = cpf;
         this.email = email;
+        this.eventos = eventos;
     }
 
     public Participante(String nome_completo, String cpf, String email) {
@@ -51,13 +62,16 @@ public class Participante implements Serializable{
         this.email = email;
     }
     
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getNome_completo() {
+
+    public Long getId_participante() {
+		return id_participante;
+	}
+
+	public void setId_participante(Long id_participante) {
+		this.id_participante = id_participante;
+	}
+
+	public String getNome_completo() {
         return nome_completo;
     }
     public void setNome_completo(String nome_completo) {
@@ -76,6 +90,15 @@ public class Participante implements Serializable{
         this.email = email;
     }
 
+     public List<Evento> getEventos() {
+		return eventos;
+	}
+
+	public void setEventos(List<Evento> eventos) {
+		this.eventos = eventos;
+	}
+
+
     @Override
     public int hashCode() {
         return Objects.hash(cpf);
@@ -91,18 +114,10 @@ public class Participante implements Serializable{
 
     @Override
     public String toString() {
-        return "Participante [id=" + id + ", nome=" + nome_completo + ", cpf=" + cpf + ", email=" + email + "]";
+        return "Participante [id=" + id_participante + ", nome=" + nome_completo + ", cpf=" + cpf + ", email=" + email + "]";
     }
 
-    public Campanha criarParticipante(Participante participante) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'criarParticipante'");
-    }
-
-    public List<Participante> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
-    }
+ 
 
 
     

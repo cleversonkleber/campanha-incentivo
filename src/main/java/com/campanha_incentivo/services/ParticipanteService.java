@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.campanha_incentivo.dtos.ParticipanteDTO;
+import com.campanha_incentivo.entities.Participante;
 import com.campanha_incentivo.exception.handler.ResourceExistsException;
 import com.campanha_incentivo.exception.handler.ResourceNotFoundException;
 import com.campanha_incentivo.mapper.ParticipanteMapper;
-import com.campanha_incentivo.model.Participante;
 import com.campanha_incentivo.repositories.ParticipanteRepository;
 
 @Service

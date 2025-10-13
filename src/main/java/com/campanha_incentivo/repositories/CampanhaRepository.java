@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.campanha_incentivo.model.Campanha;
+import com.campanha_incentivo.entities.Campanha;
 
 
 @Repository

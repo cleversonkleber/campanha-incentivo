@@ -19,8 +19,8 @@ import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.times;
 
 import com.campanha_incentivo.dtos.CampanhaDto;
+import com.campanha_incentivo.entities.Campanha;
 import com.campanha_incentivo.mapper.CampanhaMapper;
-import com.campanha_incentivo.model.Campanha;
 import com.campanha_incentivo.repositories.CampanhaRepository;
 
 @ExtendWith(MockitoExtension.class)

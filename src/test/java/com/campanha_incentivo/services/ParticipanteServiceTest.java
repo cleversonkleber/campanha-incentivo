@@ -11,6 +11,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -26,8 +27,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 
 import com.campanha_incentivo.dtos.ParticipanteDTO;
+import com.campanha_incentivo.entities.Evento;
+import com.campanha_incentivo.entities.Participante;
 import com.campanha_incentivo.mapper.ParticipanteMapper;
-import com.campanha_incentivo.model.Participante;
 import com.campanha_incentivo.repositories.ParticipanteRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -51,13 +53,11 @@ public class ParticipanteServiceTest {
 
     @BeforeEach
     public void stup(){
-
-        participante = new Participante(null, "João Carlos","11111111110","joaoCarlos@j.com"); // O null no final assume Participantes
+        participante = new Participante(null, "João Carlos","11111111110","joaoCarlos@j.com",null); // O null no final assume Participantes
         participanteDTO = new ParticipanteDTO("João Carlos","11111111110","joaoCarlos@j.com");
         
-        participante1 = new Participante(null, "João Jose","11111111112","joaojose@j.com"); // O null no final assume Participantes
+        participante1 = new Participante(null, "João Jose","11111111112","joaojose@j.com", null); // O null no final assume Participantes
         participanteDTO1 = new ParticipanteDTO("João Jose","11111111112","joaojose@j.com");
-
 
 
     }
@@ -70,7 +70,7 @@ public class ParticipanteServiceTest {
 
         given(participanteMapper.toEntity(participanteDTO)).willReturn(participante);
 
-        Participante participanteSalva = new Participante(1L, participante.getNome_completo(),participante.getCpf(), participante.getEmail());
+        Participante participanteSalva = new Participante(1L, participante.getNome_completo(),participante.getCpf(), participante.getEmail(), null);
         given(participanteRepository.save(participante)).willReturn(participanteSalva);
 
         ParticipanteDTO participanteDTOSalva = new ParticipanteDTO(participanteDTO.nome_completo(), participanteDTO.cpf(), participanteDTO.email());

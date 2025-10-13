@@ -9,11 +9,9 @@ import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 
 import com.campanha_incentivo.dtos.CampanhaDto;
-import com.campanha_incentivo.dtos.ParticipanteDTO;
+import com.campanha_incentivo.entities.Campanha;
 import com.campanha_incentivo.exception.handler.ResourceNotFoundException;
 import com.campanha_incentivo.mapper.CampanhaMapper;
-import com.campanha_incentivo.model.Campanha;
-import com.campanha_incentivo.model.Participante;
 import com.campanha_incentivo.repositories.CampanhaRepository;
 
 @Service

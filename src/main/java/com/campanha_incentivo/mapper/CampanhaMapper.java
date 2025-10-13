@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import com.campanha_incentivo.dtos.CampanhaDto;
-import com.campanha_incentivo.model.Campanha;
+import com.campanha_incentivo.entities.Campanha;
 
 
 @Mapper(componentModel = "spring")
