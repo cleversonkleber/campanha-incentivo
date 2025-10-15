@@ -5,12 +5,13 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,6 +25,8 @@ public class Evento implements Serializable {
 
     @Column(name = "DATAHORA_OCORRENCIA", nullable = false)
     private LocalDateTime dataHoraOcorrencia;
+	
+	@Enumerated(EnumType.STRING)
     @Column(name = "TIPO_EVENTO", nullable = false)
     private TipoEvento tipoEvento;
     @Column(name = "VALOR", nullable = false)
@@ -33,14 +36,12 @@ public class Evento implements Serializable {
     @Column(name = "PONTOS_GERADOS", nullable = false)
     private Double pontosGerados;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "id_participante")
-    @Column(name = "PARTICIPANTE", nullable = false)
     private Participante participante;
     
     @ManyToOne
-    @JoinColumn(name = "id_campanha")
-    @Column(name = "CAMPANHA", nullable = false)
+    @JoinColumn(name = "id_campanha", nullable = false)
     private Campanha campanha;
 
 

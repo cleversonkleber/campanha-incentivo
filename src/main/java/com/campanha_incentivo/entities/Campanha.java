@@ -38,12 +38,8 @@ public class Campanha implements Serializable{
     @Column(name = "DESCRICAO", nullable = false, length = 255)
     private String descricao;
 
-    @OneToMany
-    @JoinTable(name = "TB_EVENTO",
-	     joinColumns = @JoinColumn(name = "id_evento"),
-	     inverseJoinColumns = @JoinColumn(name = "id_campanha"))
-    @Column(name = "EVENTO",nullable = true)
-    private List<Evento> eventos; 
+    @OneToMany(mappedBy = "campanha")
+	private List<Evento> eventos; 
 
 
     public Campanha() {

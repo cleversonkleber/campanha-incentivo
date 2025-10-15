@@ -37,12 +37,8 @@ public class Participante implements Serializable{
     @Email
     private String email;
 
-    @OneToMany
-    @JoinTable(name = "TB_EVENTO",
-	     joinColumns = @JoinColumn(name = "id_evento"),
-	     inverseJoinColumns = @JoinColumn(name = "id_participante"))
-    @Column(name = "EVENTO",nullable = true)
-    private List<Evento> eventos; 
+    @OneToMany(mappedBy = "participante")
+	private List<Evento> eventos; 
 
     
     public Participante() {
