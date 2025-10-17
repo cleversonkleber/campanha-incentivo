@@ -29,6 +29,15 @@ public class CampanhaService {
         this.mapper = mapper;         
     }
 
+    public Campanha findByName(String nome){
+        Optional<Campanha> optional = repository.findByNome(nome);
+        if (!optional.isPresent()){
+            logger.info("Erro ao atualizar campanha!");
+        }
+        Campanha campanha = optional
+                        .orElseThrow(() -> new ResourceNotFoundException("Não camapanha com o nome: "+ nome));
+        return campanha;
+    }
 
     public CampanhaDto criarCampanha(CampanhaDto dto) {
         logger.info("Criando campanha!");

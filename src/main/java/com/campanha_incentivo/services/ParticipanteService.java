@@ -75,4 +75,11 @@ public class ParticipanteService {
         return mapper.tDto(participante);
 
     }
+
+    public ParticipanteDTO findByCpf(ParticipanteDTO dto){
+        Optional<Participante> optional = repository.findByCpf(dto.cpf());
+                Participante participante = optional
+                        .orElseThrow(() -> new ResourceNotFoundException("Não existe um participante com o cpf: "+ dto.cpf()));
+        return mapper.tDto(participante);
+    }
 }

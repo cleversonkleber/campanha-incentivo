@@ -17,4 +17,5 @@ public interface ParticipanteMapper {
     @Mapping(target = "email", source = "email")
     ParticipanteDTO tDto(Participante entity);
 
+
 }

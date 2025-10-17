@@ -30,10 +30,10 @@ public record EventoDto(
         Double pontosGerados,
 
         @NotNull(message = "Participante é obrigatória.")
-        Participante participante,
+        String cpf_participante,
 
         @NotNull(message = "Campanha obrigatória.")
-        Campanha campanha
+        String nomeCampanha
 
  ){}
 
