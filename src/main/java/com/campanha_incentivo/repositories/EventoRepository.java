@@ -9,6 +9,7 @@ import com.campanha_incentivo.entities.Evento;
 @Repository
 public interface EventoRepository  extends JpaRepository<Evento, Long>{
 
+	
    
 
 }

@@ -8,6 +8,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record CampanhaDto(
+		
+		@NotNull(message = "O ID da camapnha é obrigatório para atualização.")
+        Long id,
+        
         @NotBlank(message = "O nome da campanha é obrigatório.") 
         @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres.")
         String nome,

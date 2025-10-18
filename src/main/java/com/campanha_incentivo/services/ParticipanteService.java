@@ -31,7 +31,7 @@ public class ParticipanteService {
 
     public ParticipanteDTO criarParticipante(ParticipanteDTO dto) {
         
-        Optional<Participante> optional = repository.findByCpf(dto.cpf());
+        Optional<Participante> optional = repository.findById(dto.id());
         if (optional.isPresent()) {
             logger.warning("Existe um participante com o cpf: "+ dto.cpf());
             throw new ResourceExistsException(
@@ -62,7 +62,7 @@ public class ParticipanteService {
 
     public ParticipanteDTO update(ParticipanteDTO dto) {
         logger.info("Atualizar participante!");
-        Optional<Participante> optional = repository.findByCpf(dto.cpf());
+        Optional<Participante> optional = repository.findById(dto.id());
          if (!optional.isPresent()) {
             logger.info("Participante não existe com o cpf: "+ dto.cpf());
         }

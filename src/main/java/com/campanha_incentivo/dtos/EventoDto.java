@@ -2,9 +2,6 @@ package com.campanha_incentivo.dtos;
 
 import java.time.LocalDateTime;
 
-
-import com.campanha_incentivo.entities.Campanha;
-import com.campanha_incentivo.entities.Participante;
 import com.campanha_incentivo.entities.TipoEvento;
 
 
@@ -12,6 +9,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record EventoDto(
+		
+		@NotNull(message = "O ID do evento é obrigatório para atualização.")
+        Long id,
         
         @NotNull(message = "A data do evetnto é obrigatória.")
         LocalDateTime dataHoraOcorrencia,

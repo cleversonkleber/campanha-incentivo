@@ -41,16 +41,14 @@ public class CampanhaServiceTest {
     private CampanhaDto  campanhaDto1;
     private Campanha campanha1;
 
-    private LocalDateTime inicio;
-    private LocalDateTime fim;
 
     @BeforeEach
     public void stup(){
         LocalDateTime inicio = LocalDateTime.now();
         LocalDateTime fim = LocalDateTime.now().plusDays(10);
-        campanhaDto = new CampanhaDto("Vendas+",inicio, fim,"Vender mais e mais");
+        campanhaDto = new CampanhaDto(null,"Vendas+",inicio, fim,"Vender mais e mais");
         campanha = new Campanha(1L, "Vendas+", inicio, fim, "Vender mais e mais", null); // O null no final assume Participantes
-        campanhaDto1 = new CampanhaDto("Vendas++",inicio, fim,"Vender mais e mais muito mais");
+        campanhaDto1 = new CampanhaDto(null,"Vendas++",inicio, fim,"Vender mais e mais muito mais");
         campanha1 = new Campanha(1L, "Vendas++", inicio, fim, "ender mais e mais muito mais", null); // O null no final assume Participantes
     }
 
@@ -64,7 +62,7 @@ public class CampanhaServiceTest {
         Campanha campanhaSalva = new Campanha(1L, "Vendas+", campanha.getDataInicio(), campanha.getDataFim(), "Vender mais e mais", null);
         given(campanhaRepository.save(campanha)).willReturn(campanhaSalva);
 
-        CampanhaDto campanhaDtoSalva = new CampanhaDto( "Vendas+", campanhaSalva.getDataInicio(), campanhaSalva.getDataFim(), "Vender mais e mais");
+        CampanhaDto campanhaDtoSalva = new CampanhaDto(null,"Vendas+", campanhaSalva.getDataInicio(), campanhaSalva.getDataFim(), "Vender mais e mais");
         given(campanhaMapper.tDto(campanhaSalva)).willReturn(campanhaDtoSalva);
         
         var salvarCampanha = campanhaService.criarCampanha(campanhaDto);

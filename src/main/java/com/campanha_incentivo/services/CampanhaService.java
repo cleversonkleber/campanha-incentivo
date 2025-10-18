@@ -41,8 +41,10 @@ public class CampanhaService {
 
     public CampanhaDto criarCampanha(CampanhaDto dto) {
         logger.info("Criando campanha!");
-        Campanha campanha = repository.save(mapper.toEntity(dto));
-        return mapper.tDto(campanha);
+        String nomeCampanha = dto.nome().toUpperCase().toString();
+        Campanha campanhaSava =mapper.toEntity(dto);
+        campanhaSava.setNome(nomeCampanha);
+        return mapper.tDto(repository.save(campanhaSava));
     }
 
     public List<CampanhaDto> findAll() {
@@ -63,13 +65,14 @@ public class CampanhaService {
 
     public CampanhaDto update(CampanhaDto dto) {
         logger.info("Atualizar campanha!");
-        Optional<Campanha> optional = repository.findByNome(dto.nome());
+        String nomeCampanha = dto.nome().toUpperCase().toString();
+        Optional<Campanha> optional = repository.findById(dto.id());
         if (!optional.isPresent()) {
             logger.info("Erro ao atualizar campanha!");
         }
         Campanha campanha = optional
                         .orElseThrow(() -> new ResourceNotFoundException("Não camapanha com o nome: "+ dto.nome()));
-        campanha.setNome(dto.nome());
+        campanha.setNome(nomeCampanha);
         campanha.setDataInicio(dto.dataInicio());
         campanha.setDataFim(dto.dataFim());
         repository.save(campanha);

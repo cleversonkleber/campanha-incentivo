@@ -1,12 +1,13 @@
 package com.campanha_incentivo.services;
 
+import java.text.Collator;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -14,6 +15,7 @@ import com.campanha_incentivo.dtos.EventoDto;
 import com.campanha_incentivo.entities.Campanha;
 import com.campanha_incentivo.entities.Evento;
 import com.campanha_incentivo.entities.Participante;
+import com.campanha_incentivo.exception.handler.ResourceNotFoundException;
 import com.campanha_incentivo.mapper.EventoMapper;
 import com.campanha_incentivo.repositories.CampanhaRepository;
 import com.campanha_incentivo.repositories.EventoRepository;
@@ -24,24 +26,27 @@ public class EventoService implements IService<EventoDto, Long>{
 
     private Logger logger = Logger.getLogger(EventoService.class.getName());
 
-  
-    @Autowired
     private CampanhaRepository campanhaRepository;
-
-    @Autowired
     private EventoRepository eventoRepository;
-
-    @Autowired
     private ParticipanteRepository participanteRepository;
-
-    @Autowired
-    EventoMapper eventoMapper;
+    private EventoMapper eventoMapper;
 
     
 
-    @Override
-    public EventoDto criar(EventoDto dto) {
+    public EventoService(Logger logger, CampanhaRepository campanhaRepository, EventoRepository eventoRepository,
+			ParticipanteRepository participanteRepository, EventoMapper eventoMapper) {
+		super();
+		this.logger = logger;
+		this.campanhaRepository = campanhaRepository;
+		this.eventoRepository = eventoRepository;
+		this.participanteRepository = participanteRepository;
+		this.eventoMapper = eventoMapper;
+	}
 
+	@Override
+    public EventoDto criar(EventoDto dto) {
+		String nomeCampanhaNormalizado = dto.nomeCampanha().toUpperCase().toString();
+		
         Participante participante = participanteRepository.findByCpf(dto.cpf_participante())
                 .orElseThrow(
                     ()-> new ResponseStatusException(
@@ -49,7 +54,7 @@ public class EventoService implements IService<EventoDto, Long>{
                     "Participante com o CPF"+dto.cpf_participante() + " não encontrado!"
                 ));
 
-        Campanha campanha = campanhaRepository.findByNome(dto.nomeCampanha().toString())
+        Campanha campanha = campanhaRepository.findByNome(nomeCampanhaNormalizado)
                 .orElseThrow(()-> new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     "Campanha com o nome"+dto.nomeCampanha() + " não encontrado!"
@@ -59,6 +64,7 @@ public class EventoService implements IService<EventoDto, Long>{
         Evento evento = eventoMapper.toEntity(dto);
         evento.setCampanha(campanha);
         evento.setParticipante(participante);
+        
 
         Evento eventoSalvo = eventoRepository.save(evento);
         
@@ -67,20 +73,53 @@ public class EventoService implements IService<EventoDto, Long>{
 
     @Override
     public List<EventoDto> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+    	logger.info("Listar todas os eventos.");
+    	return eventoRepository.findAll()
+    			.stream()
+    			.map(eventoMapper::toDto)
+    			.collect(Collectors.toList());
+    			
+
     }
 
     @Override
     public void delete(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    	var evento = eventoRepository.findById(id).orElseThrow(
+    			()-> new ResourceNotFoundException("Id não encontrado"));
+    	eventoRepository.delete(evento);
     }
 
     @Override
     public EventoDto update(EventoDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    	   Participante participante = participanteRepository.findByCpf(dto.cpf_participante())
+                   .orElseThrow(
+                       ()-> new ResponseStatusException(
+                       HttpStatus.NOT_FOUND,
+                       "Participante com o CPF"+dto.cpf_participante() + " não encontrado!"
+                   ));
+
+           Campanha campanha = campanhaRepository.findByNome(dto.nomeCampanha().toString())
+                   .orElseThrow(()-> new ResponseStatusException(
+                       HttpStatus.NOT_FOUND,
+                       "Campanha com o nome"+dto.nomeCampanha() + " não encontrado!"
+                   ));
+           
+           Evento eventoBd= eventoRepository.findById(dto.id())
+        		   .orElseThrow(
+                           ()-> new ResponseStatusException(
+                           HttpStatus.NOT_FOUND,
+                           "Participante com o CPF"+dto.cpf_participante() + " não encontrado!"
+                       ));
+           
+           eventoBd.setCampanha(campanha);
+           eventoBd.setParticipante(participante);
+           eventoBd.setDataHoraOcorrencia(dto.dataHoraOcorrencia());
+           eventoBd.setDescricao(dto.descricao());
+           eventoBd.setTipoEvento(dto.tipoEvento());
+           eventoBd.setPontosGerados(dto.pontosGerados());
+           eventoBd.setValor(dto.valor());
+           eventoRepository.save(eventoBd);
+           return eventoMapper.toDto(eventoBd);
     }
 
    

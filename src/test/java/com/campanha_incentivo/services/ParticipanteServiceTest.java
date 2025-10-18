@@ -54,10 +54,10 @@ public class ParticipanteServiceTest {
     @BeforeEach
     public void stup(){
         participante = new Participante(null, "João Carlos","11111111110","joaoCarlos@j.com",null); // O null no final assume Participantes
-        participanteDTO = new ParticipanteDTO("João Carlos","11111111110","joaoCarlos@j.com");
+        participanteDTO = new ParticipanteDTO(null,"João Carlos","11111111110","joaoCarlos@j.com");
         
         participante1 = new Participante(null, "João Jose","11111111112","joaojose@j.com", null); // O null no final assume Participantes
-        participanteDTO1 = new ParticipanteDTO("João Jose","11111111112","joaojose@j.com");
+        participanteDTO1 = new ParticipanteDTO(null,"João Jose","11111111112","joaojose@j.com");
 
 
     }
@@ -73,7 +73,7 @@ public class ParticipanteServiceTest {
         Participante participanteSalva = new Participante(1L, participante.getNome_completo(),participante.getCpf(), participante.getEmail(), null);
         given(participanteRepository.save(participante)).willReturn(participanteSalva);
 
-        ParticipanteDTO participanteDTOSalva = new ParticipanteDTO(participanteDTO.nome_completo(), participanteDTO.cpf(), participanteDTO.email());
+        ParticipanteDTO participanteDTOSalva = new ParticipanteDTO(null,participanteDTO.nome_completo(), participanteDTO.cpf(), participanteDTO.email());
         given(participanteMapper.tDto(participanteSalva)).willReturn(participanteDTOSalva);
 
 
