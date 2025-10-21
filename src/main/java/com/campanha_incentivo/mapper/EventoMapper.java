@@ -10,9 +10,10 @@ import com.campanha_incentivo.entities.Evento;
 @Mapper(componentModel = "spring")
 public interface EventoMapper {
     EventoMapper INSTANCE = Mappers.getMapper(EventoMapper.class);
-    @Mapping(target = "campanha.nome",source = "dto.nomeCampanha")
+
     @Mapping(target = "id_envento",source = "dto.id")
-    @Mapping(target = "participante.cpf",source = "dto.cpf_participante")
+    @Mapping(target = "campanha", ignore = true)
+    @Mapping(target = "participante", ignore = true)
     Evento toEntity(EventoDto dto);
     
     @Mapping(target = "cpf_participante",source = "entity.participante.cpf")

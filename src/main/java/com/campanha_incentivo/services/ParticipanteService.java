@@ -17,7 +17,7 @@ import com.campanha_incentivo.repositories.ParticipanteRepository;
 @Service
 public class ParticipanteService {
 
-    private Logger logger = Logger.getLogger(CampanhaService.class.getName());
+    private Logger logger = Logger.getLogger(ParticipanteService.class.getName());
 
     
     private ParticipanteRepository repository;

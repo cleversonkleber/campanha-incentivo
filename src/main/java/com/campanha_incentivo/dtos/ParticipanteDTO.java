@@ -17,7 +17,7 @@ public record ParticipanteDTO(
     @Size(min = 11, max = 14, message = "O CPF deve conter no mínio 11 e 14 caracteres.")
     String cpf,
     
-    @NotBlank(message = "O nome do participante é obrigatório.") 
-    @Size(min = 5, max = 45, message = "O nome deve ter entre 3 e 250 caracteres.")
+    @NotBlank(message = "O emial do participante é obrigatório.") 
+    @Size(min = 5, max = 45, message = "O email deve ter entre 3 e 250 caracteres.")
     String email
 ) {}

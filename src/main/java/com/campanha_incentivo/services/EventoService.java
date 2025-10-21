@@ -1,12 +1,9 @@
 package com.campanha_incentivo.services;
 
-import java.text.Collator;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,19 +21,18 @@ import com.campanha_incentivo.repositories.ParticipanteRepository;
 @Service
 public class EventoService implements IService<EventoDto, Long>{
 
-    private Logger logger = Logger.getLogger(EventoService.class.getName());
+    
 
     private CampanhaRepository campanhaRepository;
     private EventoRepository eventoRepository;
     private ParticipanteRepository participanteRepository;
     private EventoMapper eventoMapper;
-
+    private Logger logger = Logger.getLogger(EventoService.class.getName());
     
 
-    public EventoService(Logger logger, CampanhaRepository campanhaRepository, EventoRepository eventoRepository,
+    public EventoService(CampanhaRepository campanhaRepository, EventoRepository eventoRepository,
 			ParticipanteRepository participanteRepository, EventoMapper eventoMapper) {
 		super();
-		this.logger = logger;
 		this.campanhaRepository = campanhaRepository;
 		this.eventoRepository = eventoRepository;
 		this.participanteRepository = participanteRepository;
