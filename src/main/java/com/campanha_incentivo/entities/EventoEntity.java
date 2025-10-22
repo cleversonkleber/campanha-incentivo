@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "TB_EVENTO")
-public class Evento implements Serializable {
+public class EventoEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -38,19 +38,19 @@ public class Evento implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_participante")
-    private Participante participante;
+    private ParticipanteEntity participante;
     
     @ManyToOne
     @JoinColumn(name = "id_campanha", nullable = false)
-    private Campanha campanha;
+    private CampanhaEntity campanha;
 
 
-    public Evento() {
+    public EventoEntity() {
     }
 
 
-	public Evento(Long id_envento, LocalDateTime dataHoraOcorrencia, TipoEvento tipoEvento, Double valor,
-			String descricao, Double pontosGerados, Participante participante, Campanha campanha) {
+	public EventoEntity(Long id_envento, LocalDateTime dataHoraOcorrencia, TipoEvento tipoEvento, Double valor,
+			String descricao, Double pontosGerados, ParticipanteEntity participante, CampanhaEntity campanha) {
 		this.id_envento = id_envento;
 		this.dataHoraOcorrencia = dataHoraOcorrencia;
 		this.tipoEvento = tipoEvento;
@@ -127,22 +127,22 @@ public class Evento implements Serializable {
 	}
 
 
-	public Participante getParticipante() {
+	public ParticipanteEntity getParticipante() {
 		return participante;
 	}
 
 
-	public void setParticipante(Participante participante) {
+	public void setParticipante(ParticipanteEntity participante) {
 		this.participante = participante;
 	}
 
 
-	public Campanha getCampanha() {
+	public CampanhaEntity getCampanha() {
 		return campanha;
 	}
 
 
-	public void setCampanha(Campanha campanha) {
+	public void setCampanha(CampanhaEntity campanha) {
 		this.campanha = campanha;
 	}
 
@@ -164,7 +164,7 @@ public class Evento implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Evento other = (Evento) obj;
+		EventoEntity other = (EventoEntity) obj;
 		if (id_envento == null) {
 			if (other.id_envento != null)
 				return false;

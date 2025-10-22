@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.campanha_incentivo.dtos.ParticipanteDTO;
-import com.campanha_incentivo.entities.Participante;
+import com.campanha_incentivo.entities.ParticipanteEntity;
 import com.campanha_incentivo.exception.handler.ResourceExistsException;
 import com.campanha_incentivo.exception.handler.ResourceNotFoundException;
 import com.campanha_incentivo.mapper.ParticipanteMapper;
@@ -31,7 +31,7 @@ public class ParticipanteService {
 
     public ParticipanteDTO criarParticipante(ParticipanteDTO dto) {
         
-        Optional<Participante> optional = repository.findById(dto.id());
+        Optional<ParticipanteEntity> optional = repository.findById(dto.id());
         if (optional.isPresent()) {
             logger.warning("Existe um participante com o cpf: "+ dto.cpf());
             throw new ResourceExistsException(
@@ -40,7 +40,7 @@ public class ParticipanteService {
         
         }
         logger.info("Criando participante!");
-        Participante participante = repository.save(mapper.toEntity(dto));
+        ParticipanteEntity participante = repository.save(mapper.toEntity(dto));
         return mapper.tDto(participante);
     }
 
@@ -62,11 +62,11 @@ public class ParticipanteService {
 
     public ParticipanteDTO update(ParticipanteDTO dto) {
         logger.info("Atualizar participante!");
-        Optional<Participante> optional = repository.findById(dto.id());
+        Optional<ParticipanteEntity> optional = repository.findById(dto.id());
          if (!optional.isPresent()) {
             logger.info("Participante não existe com o cpf: "+ dto.cpf());
         }
-        Participante participante = optional
+        ParticipanteEntity participante = optional
                         .orElseThrow(() -> new ResourceNotFoundException("Não existe um participante com o cpf: "+ dto.cpf()));
         participante.setCpf(dto.cpf());
         participante.setEmail(dto.email());
@@ -77,8 +77,8 @@ public class ParticipanteService {
     }
 
     public ParticipanteDTO findByCpf(ParticipanteDTO dto){
-        Optional<Participante> optional = repository.findByCpf(dto.cpf());
-                Participante participante = optional
+        Optional<ParticipanteEntity> optional = repository.findByCpf(dto.cpf());
+                ParticipanteEntity participante = optional
                         .orElseThrow(() -> new ResourceNotFoundException("Não existe um participante com o cpf: "+ dto.cpf()));
         return mapper.tDto(participante);
     }

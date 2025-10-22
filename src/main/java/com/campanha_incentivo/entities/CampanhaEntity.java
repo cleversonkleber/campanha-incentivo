@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "CAMPANHA")
-public class Campanha implements Serializable{
+public class CampanhaEntity implements Serializable{
     
     private static final long serialVersionUID = 1L;
 
@@ -37,15 +37,15 @@ public class Campanha implements Serializable{
     private String descricao;
 
     @OneToMany(mappedBy = "campanha")
-	private List<Evento> eventos; 
+	private List<EventoEntity> eventos; 
 
 
-    public Campanha() {
+    public CampanhaEntity() {
     }
 
 
-	public Campanha(Long id_campanha, String nome, LocalDateTime dataInicio, LocalDateTime dataFim, String descricao,
-			List<Evento> eventos) {
+	public CampanhaEntity(Long id_campanha, String nome, LocalDateTime dataInicio, LocalDateTime dataFim, String descricao,
+			List<EventoEntity> eventos) {
 		this.id_campanha = id_campanha;
 		this.nome = nome;
 		this.dataInicio = dataInicio;
@@ -105,12 +105,12 @@ public class Campanha implements Serializable{
 	}
 
 
-	public List<Evento> getEventos() {
+	public List<EventoEntity> getEventos() {
 		return eventos;
 	}
 
 
-	public void setEventos(List<Evento> eventos) {
+	public void setEventos(List<EventoEntity> eventos) {
 		this.eventos = eventos;
 	}
 
@@ -132,7 +132,7 @@ public class Campanha implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Campanha other = (Campanha) obj;
+		CampanhaEntity other = (CampanhaEntity) obj;
 		if (id_campanha == null) {
 			if (other.id_campanha != null)
 				return false;

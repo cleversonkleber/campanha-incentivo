@@ -16,7 +16,7 @@ import jakarta.validation.constraints.Email;
 
 @Entity
 @Table(name = "PARTICIPANTE")
-public class Participante implements Serializable{
+public class ParticipanteEntity implements Serializable{
     
     private static final long serialVersionUID = 1L;
 
@@ -36,13 +36,13 @@ public class Participante implements Serializable{
     private String email;
 
     @OneToMany(mappedBy = "participante")
-	private List<Evento> eventos; 
+	private List<EventoEntity> eventos; 
 
     
-    public Participante() {
+    public ParticipanteEntity() {
     }
 
-    public Participante(Long id_participante, String nome_completo, String cpf, String email, List<Evento> eventos) {
+    public ParticipanteEntity(Long id_participante, String nome_completo, String cpf, String email, List<EventoEntity> eventos) {
         this.id_participante = id_participante;
         this.nome_completo = nome_completo;
         this.cpf = cpf;
@@ -50,7 +50,7 @@ public class Participante implements Serializable{
         this.eventos = eventos;
     }
 
-    public Participante(String nome_completo, String cpf, String email) {
+    public ParticipanteEntity(String nome_completo, String cpf, String email) {
          this.nome_completo = nome_completo;
         this.cpf = cpf;
         this.email = email;
@@ -84,11 +84,11 @@ public class Participante implements Serializable{
         this.email = email;
     }
 
-     public List<Evento> getEventos() {
+     public List<EventoEntity> getEventos() {
 		return eventos;
 	}
 
-	public void setEventos(List<Evento> eventos) {
+	public void setEventos(List<EventoEntity> eventos) {
 		this.eventos = eventos;
 	}
 
@@ -102,7 +102,7 @@ public class Participante implements Serializable{
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Participante other = (Participante) obj;
+        ParticipanteEntity other = (ParticipanteEntity) obj;
         return Objects.equals(cpf, other.cpf); 
     }
 

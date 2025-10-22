@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.campanha_incentivo.dtos.EventoDto;
-import com.campanha_incentivo.entities.Evento;
+import com.campanha_incentivo.entities.EventoEntity;
 
 @Mapper(componentModel = "spring")
 public interface EventoMapper {
@@ -14,11 +14,11 @@ public interface EventoMapper {
     @Mapping(target = "id_envento",source = "dto.id")
     @Mapping(target = "campanha", ignore = true)
     @Mapping(target = "participante", ignore = true)
-    Evento toEntity(EventoDto dto);
+    EventoEntity toEntity(EventoDto dto);
     
     @Mapping(target = "cpf_participante",source = "entity.participante.cpf")
     @Mapping(target = "nomeCampanha",source = "entity.campanha.nome")
     @Mapping(target = "id",source = "entity.id_envento")
-    EventoDto toDto(Evento entity);
+    EventoDto toDto(EventoEntity entity);
 
 }

@@ -1,18 +1,20 @@
 package com.campanha_incentivo.repositories;
 
-
-
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.campanha_incentivo.entities.CampanhaEntity;
+import com.campanha_incentivo.entities.UsuarioEntity;
+
 
 
 @Repository
-public interface CampanhaRepository  extends JpaRepository<CampanhaEntity, Long>{
+public interface UsuarioRepository  extends JpaRepository<UsuarioEntity, Long>{
 
-    Optional<CampanhaEntity> findByNome(String campanha);
+	Optional<UsuarioEntity> findByCpf(String cpf);
+
+	
+   
 
 }

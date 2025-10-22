@@ -4,13 +4,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import com.campanha_incentivo.dtos.CampanhaDto;
-import com.campanha_incentivo.entities.Campanha;
+import com.campanha_incentivo.entities.CampanhaEntity;
 
 
 @Mapper(componentModel = "spring")
 public interface CampanhaMapper {
     CampanhaMapper INSTANCE = Mappers.getMapper(CampanhaMapper.class);
-    Campanha toEntity(CampanhaDto dto);
-    CampanhaDto tDto(Campanha entity);
+    CampanhaEntity toEntity(CampanhaDto dto);
+    CampanhaDto tDto(CampanhaEntity entity);
 
 }

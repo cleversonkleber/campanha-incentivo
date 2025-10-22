@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 
 import com.campanha_incentivo.dtos.CampanhaDto;
-import com.campanha_incentivo.entities.Campanha;
+import com.campanha_incentivo.entities.CampanhaEntity;
 import com.campanha_incentivo.exception.handler.ResourceNotFoundException;
 import com.campanha_incentivo.mapper.CampanhaMapper;
 import com.campanha_incentivo.repositories.CampanhaRepository;
@@ -29,12 +29,12 @@ public class CampanhaService {
         this.mapper = mapper;         
     }
 
-    public Campanha findByName(String nome){
-        Optional<Campanha> optional = repository.findByNome(nome);
+    public CampanhaEntity findByName(String nome){
+        Optional<CampanhaEntity> optional = repository.findByNome(nome);
         if (!optional.isPresent()){
             logger.info("Erro ao atualizar campanha!");
         }
-        Campanha campanha = optional
+        CampanhaEntity campanha = optional
                         .orElseThrow(() -> new ResourceNotFoundException("Não camapanha com o nome: "+ nome));
         return campanha;
     }
@@ -42,7 +42,7 @@ public class CampanhaService {
     public CampanhaDto criarCampanha(CampanhaDto dto) {
         logger.info("Criando campanha!");
         String nomeCampanha = dto.nome().toUpperCase().toString();
-        Campanha campanhaSava =mapper.toEntity(dto);
+        CampanhaEntity campanhaSava =mapper.toEntity(dto);
         campanhaSava.setNome(nomeCampanha);
         return mapper.tDto(repository.save(campanhaSava));
     }
@@ -66,11 +66,11 @@ public class CampanhaService {
     public CampanhaDto update(CampanhaDto dto) {
         logger.info("Atualizar campanha!");
         String nomeCampanha = dto.nome().toUpperCase().toString();
-        Optional<Campanha> optional = repository.findById(dto.id());
+        Optional<CampanhaEntity> optional = repository.findById(dto.id());
         if (!optional.isPresent()) {
             logger.info("Erro ao atualizar campanha!");
         }
-        Campanha campanha = optional
+        CampanhaEntity campanha = optional
                         .orElseThrow(() -> new ResourceNotFoundException("Não camapanha com o nome: "+ dto.nome()));
         campanha.setNome(nomeCampanha);
         campanha.setDataInicio(dto.dataInicio());

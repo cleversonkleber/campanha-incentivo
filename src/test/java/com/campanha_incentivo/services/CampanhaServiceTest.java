@@ -19,7 +19,7 @@ import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.times;
 
 import com.campanha_incentivo.dtos.CampanhaDto;
-import com.campanha_incentivo.entities.Campanha;
+import com.campanha_incentivo.entities.CampanhaEntity;
 import com.campanha_incentivo.mapper.CampanhaMapper;
 import com.campanha_incentivo.repositories.CampanhaRepository;
 
@@ -36,10 +36,10 @@ public class CampanhaServiceTest {
     private CampanhaMapper campanhaMapper;
 
     private CampanhaDto  campanhaDto;
-    private Campanha campanha;
+    private CampanhaEntity campanha;
 
     private CampanhaDto  campanhaDto1;
-    private Campanha campanha1;
+    private CampanhaEntity campanha1;
 
 
     @BeforeEach
@@ -47,9 +47,9 @@ public class CampanhaServiceTest {
         LocalDateTime inicio = LocalDateTime.now();
         LocalDateTime fim = LocalDateTime.now().plusDays(10);
         campanhaDto = new CampanhaDto(null,"Vendas+",inicio, fim,"Vender mais e mais");
-        campanha = new Campanha(1L, "Vendas+", inicio, fim, "Vender mais e mais", null); // O null no final assume Participantes
+        campanha = new CampanhaEntity(1L, "Vendas+", inicio, fim, "Vender mais e mais", null); // O null no final assume Participantes
         campanhaDto1 = new CampanhaDto(null,"Vendas++",inicio, fim,"Vender mais e mais muito mais");
-        campanha1 = new Campanha(1L, "Vendas++", inicio, fim, "ender mais e mais muito mais", null); // O null no final assume Participantes
+        campanha1 = new CampanhaEntity(1L, "Vendas++", inicio, fim, "ender mais e mais muito mais", null); // O null no final assume Participantes
     }
 
     @DisplayName("Teste Junit para determinado objeto de campanha Quando salvar campanha retornar objeto de campanha")
@@ -59,7 +59,7 @@ public class CampanhaServiceTest {
         given(campanhaMapper.toEntity(campanhaDto)).willReturn(campanha);
 
         // When / Act
-        Campanha campanhaSalva = new Campanha(1L, "Vendas+", campanha.getDataInicio(), campanha.getDataFim(), "Vender mais e mais", null);
+        CampanhaEntity campanhaSalva = new CampanhaEntity(1L, "Vendas+", campanha.getDataInicio(), campanha.getDataFim(), "Vender mais e mais", null);
         given(campanhaRepository.save(campanha)).willReturn(campanhaSalva);
 
         CampanhaDto campanhaDtoSalva = new CampanhaDto(null,"Vendas+", campanhaSalva.getDataInicio(), campanhaSalva.getDataFim(), "Vender mais e mais");
@@ -76,7 +76,7 @@ public class CampanhaServiceTest {
     @Test
     void testFindAllCampanhas() {
         //Given / Arrange
-        List<Campanha>campanhasRepositorio=Arrays.asList(
+        List<CampanhaEntity>campanhasRepositorio=Arrays.asList(
             campanha,
             campanha1
         );

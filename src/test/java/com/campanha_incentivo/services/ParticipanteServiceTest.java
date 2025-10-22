@@ -27,8 +27,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 
 import com.campanha_incentivo.dtos.ParticipanteDTO;
-import com.campanha_incentivo.entities.Evento;
-import com.campanha_incentivo.entities.Participante;
+import com.campanha_incentivo.entities.EventoEntity;
+import com.campanha_incentivo.entities.ParticipanteEntity;
 import com.campanha_incentivo.mapper.ParticipanteMapper;
 import com.campanha_incentivo.repositories.ParticipanteRepository;
 
@@ -45,18 +45,18 @@ public class ParticipanteServiceTest {
     private ParticipanteMapper participanteMapper;
 
     private ParticipanteDTO participanteDTO;
-    private Participante participante;
+    private ParticipanteEntity participante;
 
     private ParticipanteDTO  participanteDTO1;
-    private Participante participante1;
+    private ParticipanteEntity participante1;
 
 
     @BeforeEach
     public void stup(){
-        participante = new Participante(null, "João Carlos","11111111110","joaoCarlos@j.com",null); // O null no final assume Participantes
+        participante = new ParticipanteEntity(null, "João Carlos","11111111110","joaoCarlos@j.com",null); // O null no final assume Participantes
         participanteDTO = new ParticipanteDTO(null,"João Carlos","11111111110","joaoCarlos@j.com");
         
-        participante1 = new Participante(null, "João Jose","11111111112","joaojose@j.com", null); // O null no final assume Participantes
+        participante1 = new ParticipanteEntity(null, "João Jose","11111111112","joaojose@j.com", null); // O null no final assume Participantes
         participanteDTO1 = new ParticipanteDTO(null,"João Jose","11111111112","joaojose@j.com");
 
 
@@ -70,7 +70,7 @@ public class ParticipanteServiceTest {
 
         given(participanteMapper.toEntity(participanteDTO)).willReturn(participante);
 
-        Participante participanteSalva = new Participante(1L, participante.getNome_completo(),participante.getCpf(), participante.getEmail(), null);
+        ParticipanteEntity participanteSalva = new ParticipanteEntity(1L, participante.getNome_completo(),participante.getCpf(), participante.getEmail(), null);
         given(participanteRepository.save(participante)).willReturn(participanteSalva);
 
         ParticipanteDTO participanteDTOSalva = new ParticipanteDTO(null,participanteDTO.nome_completo(), participanteDTO.cpf(), participanteDTO.email());
@@ -109,12 +109,12 @@ public class ParticipanteServiceTest {
         assertEquals(0, participantesDtos.size(), "O tamanho da lista deve ser 0.");
 
         verify(participanteRepository, times(1)).findAll();
-        verify(participanteMapper, never()).tDto(any(Participante.class));
+        verify(participanteMapper, never()).tDto(any(ParticipanteEntity.class));
     }
     @Test
     void testFindAll_retornaListaDeParticipantesQuandoExistemRegistros() {
         // Given / Arrange
-        List<Participante> entidadesRetornadasPeloRepo = Arrays.asList(participante, participante1);
+        List<ParticipanteEntity> entidadesRetornadasPeloRepo = Arrays.asList(participante, participante1);
 
 
         given(participanteRepository.findAll()).willReturn(entidadesRetornadasPeloRepo);

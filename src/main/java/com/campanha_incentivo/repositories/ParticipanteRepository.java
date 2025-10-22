@@ -5,10 +5,10 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.campanha_incentivo.entities.Participante;
+import com.campanha_incentivo.entities.ParticipanteEntity;
 
 @Repository
-public interface ParticipanteRepository  extends JpaRepository<Participante, Long>{
+public interface ParticipanteRepository  extends JpaRepository<ParticipanteEntity, Long>{
 
-    Optional<Participante> findByCpf(String cpf);
+    Optional<ParticipanteEntity> findByCpf(String cpf);
 }
