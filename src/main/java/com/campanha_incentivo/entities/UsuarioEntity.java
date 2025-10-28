@@ -1,17 +1,27 @@
 package com.campanha_incentivo.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "TB_USUARIO")
-public class UsuarioEntity implements Serializable{
+public class UsuarioEntity implements UserDetails,Serializable{
     
     private static final long serialVersionUID = 1L;
     
@@ -33,6 +43,14 @@ public class UsuarioEntity implements Serializable{
     @Column(nullable = false, length = 20)
     private String telefone2;
     
+    @ManyToMany(fetch = FetchType.EAGER) 
+    @JoinTable(
+        name = "TB_USUARIO_ACESSO",
+        joinColumns = {@JoinColumn(name = "fk_usuario_id")},
+        inverseJoinColumns = {@JoinColumn(name = "fk_grupo_id")}
+    )
+    private Set<GropsAcessoEntity> gruposAcesso = new HashSet<>();
+    
     public UsuarioEntity() {
 	}
     
@@ -48,26 +66,48 @@ public class UsuarioEntity implements Serializable{
 		this.telefone2 = telefone2;
 	}
 
+	
+	
 	public Long getId_usuario() {
 		return id_usuario;
+	}
+
+	public void setId_usuario(Long id_usuario) {
+		this.id_usuario = id_usuario;
 	}
 
 	public String getNome() {
 		return nome;
 	}
 
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
 	public String getSobreNome() {
 		return sobreNome;
+	}
+
+	public void setSobreNome(String sobreNome) {
+		this.sobreNome = sobreNome;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getCpf() {
 		return cpf;
 	}
-	
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
 	public String getSenha() {
 		return senha;
 	}
@@ -80,8 +120,43 @@ public class UsuarioEntity implements Serializable{
 		return telefone1;
 	}
 
+	public void setTelefone1(String telefone1) {
+		this.telefone1 = telefone1;
+	}
+
 	public String getTelefone2() {
 		return telefone2;
+	}
+
+	public void setTelefone2(String telefone2) {
+		this.telefone2 = telefone2;
+	}
+
+	public void setGruposAcesso(Set<GropsAcessoEntity> gruposAcesso) {
+		this.gruposAcesso = gruposAcesso;
+	}
+	
+
+	public Set<GropsAcessoEntity> getGruposAcesso() {
+		return gruposAcesso;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
@@ -110,6 +185,10 @@ public class UsuarioEntity implements Serializable{
 			return false;
 		return true;
 	}
+
+
+
+	
     
 
 }

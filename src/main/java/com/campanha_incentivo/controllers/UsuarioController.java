@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,14 +29,36 @@ public class UsuarioController {
 
     private Logger logger = Logger.getLogger(UsuarioController.class.getName());
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
     @PostMapping(
+    	path = "/cadastrar",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UsuarioDTO> criarParticipante(@RequestBody UsuarioDTO dto){
-        logger.info("Criar usuário!");
-        UsuarioDTO usuarioDTO = usuarioService.criarUsuario(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
+    public ResponseEntity<UsuarioDTO> criaruUsuario(@RequestBody UsuarioDTO dto){
+        logger.info("Criar usuário");
+        try {
+	        UsuarioDTO usuarioDTO = usuarioService.criarUsuario(dto);
+	        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
+        }catch (Exception e) {
+			return ResponseEntity.badRequest().<UsuarioDTO>build();
+		}
+    }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(
+    		path = "/admin/cadastrar",
+    		consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<UsuarioDTO> criarUsuarioGestor(@RequestBody UsuarioDTO dto) {
+    	logger.info("Criar usuário, com admim!");
+    	try {
+	        UsuarioDTO usuarioDTO = usuarioService.criarGestor(dto);
+	        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
+        }catch (Exception e) {
+			return ResponseEntity.badRequest().<UsuarioDTO>build();
+		}
     }
 
     @GetMapping( 

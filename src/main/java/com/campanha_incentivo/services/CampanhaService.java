@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import java.util.logging.Logger;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.campanha_incentivo.dtos.CampanhaDto;
@@ -38,7 +39,7 @@ public class CampanhaService {
                         .orElseThrow(() -> new ResourceNotFoundException("Não camapanha com o nome: "+ nome));
         return campanha;
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     public CampanhaDto criarCampanha(CampanhaDto dto) {
         logger.info("Criando campanha!");
         String nomeCampanha = dto.nome().toUpperCase().toString();
@@ -46,7 +47,7 @@ public class CampanhaService {
         campanhaSava.setNome(nomeCampanha);
         return mapper.tDto(repository.save(campanhaSava));
     }
-
+    
     public List<CampanhaDto> findAll() {
         logger.info("Listar todas as campanhas!");
         return repository.findAll()
@@ -55,7 +56,7 @@ public class CampanhaService {
                 .collect(Collectors.toList());
     }
 
-
+    @PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
     public void delete(Long id) {
         logger.info("Deletar campanha!");
         var campanha = repository.findById(id)

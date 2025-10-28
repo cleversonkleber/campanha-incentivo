@@ -12,7 +12,8 @@ import com.campanha_incentivo.entities.UsuarioEntity;
 @Repository
 public interface UsuarioRepository  extends JpaRepository<UsuarioEntity, Long>{
 
-	Optional<UsuarioEntity> findByCpf(String cpf);
+    Optional<UsuarioEntity> findByEmail(String email);
+    Optional<UsuarioEntity> findByCpf(String cpf);
 
 	
    

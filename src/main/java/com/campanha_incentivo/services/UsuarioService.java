@@ -5,48 +5,81 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.management.RuntimeErrorException;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.campanha_incentivo.dtos.UsuarioDTO;
+import com.campanha_incentivo.entities.GropsAcessoEntity;
 import com.campanha_incentivo.entities.UsuarioEntity;
 import com.campanha_incentivo.exception.handler.ResourceExistsException;
 import com.campanha_incentivo.exception.handler.ResourceNotFoundException;
 import com.campanha_incentivo.mapper.UsuarioMapper;
+import com.campanha_incentivo.repositories.GrupoAcessoRepository;
 import com.campanha_incentivo.repositories.UsuarioRepository;
 
 
 
 
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService{
 
     private Logger logger = Logger.getLogger(UsuarioService.class.getName());
 
     private UsuarioRepository usuarioRepository;
     
     private UsuarioMapper mapper;
+    
+    private final PasswordEncoder passwordEncoder;
+    
+    private final GrupoAcessoRepository acessoRepository;
 
     
-	public UsuarioService(UsuarioRepository usuarioRepository, UsuarioMapper mapper) {
+	public UsuarioService(UsuarioRepository usuarioRepository, UsuarioMapper mapper,PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
 		this.usuarioRepository = usuarioRepository;
 		this.mapper = mapper;
+		this.acessoRepository = null;
 	}
 
 
 	public UsuarioDTO criarUsuario(UsuarioDTO dto) {
 	        
-	        Optional<UsuarioEntity> optional = usuarioRepository.findById(dto.id());
-	        if (optional.isPresent()) {
-	            logger.warning("Existe um participante com o cpf: "+ dto.cpf());
-	            throw new ResourceExistsException(
-	                "Existe um participante com o cpf: "+ dto.cpf()
-	            );
-	        
+	        if(usuarioRepository.findByEmail(dto.email()).isPresent()) {
+	        	throw new RuntimeException("Email Ja cadastrado");
 	        }
-	        logger.info("Criando usuário!");
-	        UsuarioEntity usuario = usuarioRepository.save(mapper.toEntity(dto));
-	        return mapper.toDto(usuario);
+	        GropsAcessoEntity roleParticipante = acessoRepository.findByNome("ROLE_USUARIO")
+	        		.orElseThrow(()-> new RuntimeException("Role padrão não encontrado"));
+	        
+	        String senhaCripto = passwordEncoder.encode(dto.senha());
+	        UsuarioEntity novoUsuario = mapper.toEntity(dto);
+	        novoUsuario.setSenha(senhaCripto);
+	        novoUsuario.getGruposAcesso().add(roleParticipante);
+	        return mapper.toDto(usuarioRepository.save(novoUsuario));
+	        
+	        
+	        
 	    }
+	
+	public UsuarioDTO criarGestor(UsuarioDTO dto) {
+        
+        if(usuarioRepository.findByEmail(dto.email()).isPresent()) {
+        	throw new RuntimeException("Email Ja cadastrado");
+        }
+        GropsAcessoEntity roleParticipante = acessoRepository.findByNome("ROLE_GESTOR")
+        		.orElseThrow(()-> new RuntimeException("Role padrão não encontrado"));
+        
+        String senhaCripto = passwordEncoder.encode(dto.senha());
+        UsuarioEntity novoUsuario = mapper.toEntity(dto);
+        novoUsuario.setSenha(senhaCripto);
+        novoUsuario.getGruposAcesso().add(roleParticipante);
+        return mapper.toDto(usuarioRepository.save(novoUsuario));
+        
+    }
 	
 	public List<UsuarioDTO> findAll() {
 	        logger.info("Listando todos os participantes.");
@@ -85,6 +118,13 @@ public class UsuarioService {
                         .orElseThrow(() -> new ResourceNotFoundException("Não existe um participante com o cpf: "+ dto.cpf()));
         return mapper.toDto(usuario);
     }
+
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 
 }
