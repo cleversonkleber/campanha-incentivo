@@ -1,6 +1,8 @@
 package com.campanha_incentivo.entities;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -9,11 +11,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "TB_GRUPO_ACESSO")
-public class GropsAcessoEntity implements GrantedAuthority {
+public class GrupoAcessoEntity implements GrantedAuthority {
 	
     private static final long serialVersionUID = 1L;
 
@@ -24,25 +28,22 @@ public class GropsAcessoEntity implements GrantedAuthority {
     @Column(unique = true, nullable = false)
     private String nome;
     
+    @ManyToMany(mappedBy = "gruposAcesso")
+    private Set<UsuarioEntity> usuarios = new HashSet<>();
     
+	public GrupoAcessoEntity() {}
 
-	public GropsAcessoEntity() {
-		super();
-	}
-	
-	
 
-	public GropsAcessoEntity( String nome) {
+	public GrupoAcessoEntity( String nome) {
 		this.nome = nome;
 	}
-
-
+	
 
 	@Override
-	public String getAuthority() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Transient 
+    public String getAuthority() {
+        return this.nome;
+    }
 
 	public Long getId() {
 		return id;
@@ -64,7 +65,7 @@ public class GropsAcessoEntity implements GrantedAuthority {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GropsAcessoEntity that = (GropsAcessoEntity) o;
+        GrupoAcessoEntity that = (GrupoAcessoEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(nome, that.nome);
     }
 

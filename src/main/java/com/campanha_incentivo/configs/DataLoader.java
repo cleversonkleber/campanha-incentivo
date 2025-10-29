@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.campanha_incentivo.entities.GropsAcessoEntity;
+import com.campanha_incentivo.entities.GrupoAcessoEntity;
 import com.campanha_incentivo.entities.UsuarioEntity;
 import com.campanha_incentivo.repositories.GrupoAcessoRepository;
 import com.campanha_incentivo.repositories.UsuarioRepository;
@@ -28,14 +28,14 @@ public class DataLoader {
         
         return args -> {
             
-            GropsAcessoEntity adminRole = grupoAcessoRepository.findByNome(ROLE_ADMIN)
-            		.orElseGet(() -> grupoAcessoRepository.save(new GropsAcessoEntity(ROLE_ADMIN)));
+            GrupoAcessoEntity adminRole = grupoAcessoRepository.findByNome(ROLE_ADMIN)
+            		.orElseGet(() -> grupoAcessoRepository.save(new GrupoAcessoEntity(ROLE_ADMIN)));
             
-            GropsAcessoEntity gestorRole = grupoAcessoRepository.findByNome(ROLE_GESTOR)
-                    .orElseGet(() -> grupoAcessoRepository.save(new GropsAcessoEntity(ROLE_GESTOR)));
+            GrupoAcessoEntity gestorRole = grupoAcessoRepository.findByNome(ROLE_GESTOR)
+                    .orElseGet(() -> grupoAcessoRepository.save(new GrupoAcessoEntity(ROLE_GESTOR)));
 
-            GropsAcessoEntity participanteRole = grupoAcessoRepository.findByNome(ROLE_PARTICIPANTE)
-                    .orElseGet(() -> grupoAcessoRepository.save(new GropsAcessoEntity(ROLE_PARTICIPANTE)));
+            GrupoAcessoEntity participanteRole = grupoAcessoRepository.findByNome(ROLE_PARTICIPANTE)
+                    .orElseGet(() -> grupoAcessoRepository.save(new GrupoAcessoEntity(ROLE_PARTICIPANTE)));
 
             if (usuarioRepository.findByEmail("admin@incentivo.com").isEmpty()) {
                 UsuarioEntity adminUser = new UsuarioEntity();

@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.campanha_incentivo.dtos.UsuarioDTO;
-import com.campanha_incentivo.entities.GropsAcessoEntity;
+import com.campanha_incentivo.entities.GrupoAcessoEntity;
 import com.campanha_incentivo.entities.UsuarioEntity;
 import com.campanha_incentivo.exception.handler.ResourceExistsException;
 import com.campanha_incentivo.exception.handler.ResourceNotFoundException;
@@ -52,7 +52,7 @@ public class UsuarioService implements UserDetailsService{
 	        if(usuarioRepository.findByEmail(dto.email()).isPresent()) {
 	        	throw new RuntimeException("Email Ja cadastrado");
 	        }
-	        GropsAcessoEntity roleParticipante = acessoRepository.findByNome("ROLE_USUARIO")
+	        GrupoAcessoEntity roleParticipante = acessoRepository.findByNome("ROLE_USUARIO")
 	        		.orElseThrow(()-> new RuntimeException("Role padrão não encontrado"));
 	        
 	        String senhaCripto = passwordEncoder.encode(dto.senha());
@@ -70,7 +70,7 @@ public class UsuarioService implements UserDetailsService{
         if(usuarioRepository.findByEmail(dto.email()).isPresent()) {
         	throw new RuntimeException("Email Ja cadastrado");
         }
-        GropsAcessoEntity roleParticipante = acessoRepository.findByNome("ROLE_GESTOR")
+        GrupoAcessoEntity roleParticipante = acessoRepository.findByNome("ROLE_GESTOR")
         		.orElseThrow(()-> new RuntimeException("Role padrão não encontrado"));
         
         String senhaCripto = passwordEncoder.encode(dto.senha());

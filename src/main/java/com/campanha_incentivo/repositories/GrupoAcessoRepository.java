@@ -5,12 +5,12 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.campanha_incentivo.entities.GropsAcessoEntity;
+import com.campanha_incentivo.entities.GrupoAcessoEntity;
 
 
 @Repository
-public interface GrupoAcessoRepository  extends JpaRepository<GropsAcessoEntity, Long>{
+public interface GrupoAcessoRepository  extends JpaRepository<GrupoAcessoEntity, Long>{
 
-	Optional<GropsAcessoEntity> findByNome(String roleAdmin);
+	Optional<GrupoAcessoEntity> findByNome(String roleAdmin);
 
 }

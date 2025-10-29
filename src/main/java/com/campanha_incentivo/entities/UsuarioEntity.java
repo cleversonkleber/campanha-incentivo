@@ -49,7 +49,7 @@ public class UsuarioEntity implements UserDetails,Serializable{
         joinColumns = {@JoinColumn(name = "fk_usuario_id")},
         inverseJoinColumns = {@JoinColumn(name = "fk_grupo_id")}
     )
-    private Set<GropsAcessoEntity> gruposAcesso = new HashSet<>();
+    private Set<GrupoAcessoEntity> gruposAcesso = new HashSet<>();
     
     public UsuarioEntity() {
 	}
@@ -132,12 +132,12 @@ public class UsuarioEntity implements UserDetails,Serializable{
 		this.telefone2 = telefone2;
 	}
 
-	public void setGruposAcesso(Set<GropsAcessoEntity> gruposAcesso) {
+	public void setGruposAcesso(Set<GrupoAcessoEntity> gruposAcesso) {
 		this.gruposAcesso = gruposAcesso;
 	}
 	
 
-	public Set<GropsAcessoEntity> getGruposAcesso() {
+	public Set<GrupoAcessoEntity> getGruposAcesso() {
 		return gruposAcesso;
 	}
 

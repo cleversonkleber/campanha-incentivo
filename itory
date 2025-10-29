@@ -1,0 +1,340 @@
+[1mdiff --git a/src/main/java/com/campanha_incentivo/configs/DataLoader.java b/src/main/java/com/campanha_incentivo/configs/DataLoader.java[m
+[1mindex 006ccdf..f706fc9 100644[m
+[1m--- a/src/main/java/com/campanha_incentivo/configs/DataLoader.java[m
+[1m+++ b/src/main/java/com/campanha_incentivo/configs/DataLoader.java[m
+[36m@@ -5,7 +5,7 @@[m [mimport org.springframework.context.annotation.Bean;[m
+ import org.springframework.context.annotation.Configuration;[m
+ import org.springframework.security.crypto.password.PasswordEncoder;[m
+ [m
+[31m-import com.campanha_incentivo.entities.GropsAcessoEntity;[m
+[32m+[m[32mimport com.campanha_incentivo.entities.GrupoAcessoEntity;[m
+ import com.campanha_incentivo.entities.UsuarioEntity;[m
+ import com.campanha_incentivo.repositories.GrupoAcessoRepository;[m
+ import com.campanha_incentivo.repositories.UsuarioRepository;[m
+[36m@@ -28,14 +28,14 @@[m [mpublic class DataLoader {[m
+         [m
+         return args -> {[m
+             [m
+[31m-            GropsAcessoEntity adminRole = grupoAcessoRepository.findByNome(ROLE_ADMIN)[m
+[31m-            		.orElseGet(() -> grupoAcessoRepository.save(new GropsAcessoEntity(ROLE_ADMIN)));[m
+[32m+[m[32m            GrupoAcessoEntity adminRole = grupoAcessoRepository.findByNome(ROLE_ADMIN)[m
+[32m+[m[41m            [m		[32m.orElseGet(() -> grupoAcessoRepository.save(new GrupoAcessoEntity(ROLE_ADMIN)));[m
+             [m
+[31m-            GropsAcessoEntity gestorRole = grupoAcessoRepository.findByNome(ROLE_GESTOR)[m
+[31m-                    .orElseGet(() -> grupoAcessoRepository.save(new GropsAcessoEntity(ROLE_GESTOR)));[m
+[32m+[m[32m            GrupoAcessoEntity gestorRole = grupoAcessoRepository.findByNome(ROLE_GESTOR)[m
+[32m+[m[32m                    .orElseGet(() -> grupoAcessoRepository.save(new GrupoAcessoEntity(ROLE_GESTOR)));[m
+ [m
+[31m-            GropsAcessoEntity participanteRole = grupoAcessoRepository.findByNome(ROLE_PARTICIPANTE)[m
+[31m-                    .orElseGet(() -> grupoAcessoRepository.save(new GropsAcessoEntity(ROLE_PARTICIPANTE)));[m
+[32m+[m[32m            GrupoAcessoEntity participanteRole = grupoAcessoRepository.findByNome(ROLE_PARTICIPANTE)[m
+[32m+[m[32m                    .orElseGet(() -> grupoAcessoRepository.save(new GrupoAcessoEntity(ROLE_PARTICIPANTE)));[m
+ [m
+             if (usuarioRepository.findByEmail("admin@incentivo.com").isEmpty()) {[m
+                 UsuarioEntity adminUser = new UsuarioEntity();[m
+[1mdiff --git a/src/main/java/com/campanha_incentivo/entities/GrupoAcessoEntity.java b/src/main/java/com/campanha_incentivo/entities/GrupoAcessoEntity.java[m
+[1mindex e8542e8..ad232ff 100644[m
+[1m--- a/src/main/java/com/campanha_incentivo/entities/GrupoAcessoEntity.java[m
+[1m+++ b/src/main/java/com/campanha_incentivo/entities/GrupoAcessoEntity.java[m
+[36m@@ -1,6 +1,8 @@[m
+ package com.campanha_incentivo.entities;[m
+ [m
+[32m+[m[32mimport java.util.HashSet;[m
+ import java.util.Objects;[m
+[32m+[m[32mimport java.util.Set;[m
+ [m
+ import org.springframework.security.core.GrantedAuthority;[m
+ [m
+[36m@@ -9,11 +11,13 @@[m [mimport jakarta.persistence.Entity;[m
+ import jakarta.persistence.GeneratedValue;[m
+ import jakarta.persistence.GenerationType;[m
+ import jakarta.persistence.Id;[m
+[32m+[m[32mimport jakarta.persistence.ManyToMany;[m
+ import jakarta.persistence.Table;[m
+[32m+[m[32mimport jakarta.persistence.Transient;[m
+ [m
+ @Entity[m
+ @Table(name = "TB_GRUPO_ACESSO")[m
+[31m-public class GropsAcessoEntity implements GrantedAuthority {[m
+[32m+[m[32mpublic class GrupoAcessoEntity implements GrantedAuthority {[m
+ 	[m
+     private static final long serialVersionUID = 1L;[m
+ [m
+[36m@@ -24,25 +28,22 @@[m [mpublic class GropsAcessoEntity implements GrantedAuthority {[m
+     @Column(unique = true, nullable = false)[m
+     private String nome;[m
+     [m
+[32m+[m[32m    @ManyToMany(mappedBy = "gruposAcesso")[m
+[32m+[m[32m    private Set<UsuarioEntity> usuarios = new HashSet<>();[m
+     [m
+[32m+[m	[32mpublic GrupoAcessoEntity() {}[m
+ [m
+[31m-	public GropsAcessoEntity() {[m
+[31m-		super();[m
+[31m-	}[m
+[31m-	[m
+[31m-	[m
+ [m
+[31m-	public GropsAcessoEntity( String nome) {[m
+[32m+[m	[32mpublic GrupoAcessoEntity( String nome) {[m
+ 		this.nome = nome;[m
+ 	}[m
+[31m-[m
+[31m-[m
+[32m+[m[41m	[m
+ [m
+ 	@Override[m
+[31m-	public String getAuthority() {[m
+[31m-		// TODO Auto-generated method stub[m
+[31m-		return null;[m
+[31m-	}[m
+[32m+[m[32m    @Transient[m[41m [m
+[32m+[m[32m    public String getAuthority() {[m
+[32m+[m[32m        return this.nome;[m
+[32m+[m[32m    }[m
+ [m
+ 	public Long getId() {[m
+ 		return id;[m
+[36m@@ -64,7 +65,7 @@[m [mpublic class GropsAcessoEntity implements GrantedAuthority {[m
+     public boolean equals(Object o) {[m
+         if (this == o) return true;[m
+         if (o == null || getClass() != o.getClass()) return false;[m
+[31m-        GropsAcessoEntity that = (GropsAcessoEntity) o;[m
+[32m+[m[32m        GrupoAcessoEntity that = (GrupoAcessoEntity) o;[m
+         return Objects.equals(id, that.id) && Objects.equals(nome, that.nome);[m
+     }[m
+ [m
+[1mdiff --git a/src/main/java/com/campanha_incentivo/entities/ParticipanteEntity.java b/src/main/java/com/campanha_incentivo/entities/ParticipanteEntity.java[m
+[1mindex 103d75c..fce15d9 100644[m
+[1m--- a/src/main/java/com/campanha_incentivo/entities/ParticipanteEntity.java[m
+[1m+++ b/src/main/java/com/campanha_incentivo/entities/ParticipanteEntity.java[m
+[36m@@ -1,21 +1,23 @@[m
+ package com.campanha_incentivo.entities;[m
+ [m
+ import java.io.Serializable;[m
+[32m+[m[32mimport java.util.HashSet;[m
+ import java.util.List;[m
+[31m-import java.util.Objects;[m
+[32m+[m[32mimport java.util.Set;[m
+ [m
+[31m-import jakarta.persistence.Column;[m
+ import jakarta.persistence.Entity;[m
+ import jakarta.persistence.GeneratedValue;[m
+ import jakarta.persistence.GenerationType;[m
+ import jakarta.persistence.Id;[m
+[32m+[m[32mimport jakarta.persistence.JoinColumn;[m
+[32m+[m[32mimport jakarta.persistence.ManyToMany;[m
+ import jakarta.persistence.OneToMany;[m
+[32m+[m[32mimport jakarta.persistence.OneToOne;[m
+ import jakarta.persistence.Table;[m
+[31m-import jakarta.validation.constraints.Email;[m
+ [m
+ [m
+ @Entity[m
+[31m-@Table(name = "PARTICIPANTE")[m
+[32m+[m[32m@Table(name = "TB_PARTICIPANTE")[m
+ public class ParticipanteEntity implements Serializable{[m
+     [m
+     private static final long serialVersionUID = 1L;[m
+[36m@@ -24,16 +26,12 @@[m [mpublic class ParticipanteEntity implements Serializable{[m
+     @GeneratedValue(strategy = GenerationType.IDENTITY)[m
+     private Long id_participante;[m
+ [m
+[31m-    @Column(name = "NOME_COMPLETO", nullable = false, length = 45)[m
+[31m-    private String nome_completo;[m
+[31m-[m
+[31m-[m
+[31m-    @Column(name = "CPF", nullable = false, length = 255, unique = true)[m
+[31m-    private String cpf;[m
+[31m-[m
+[31m-    @Column(name = "EMAIL", nullable = false, length = 255, unique = true)[m
+[31m-    @Email[m
+[31m-    private String email;[m
+[32m+[m[32m    @OneToOne[m
+[32m+[m[32m    @JoinColumn(name = "fk_usuario_id", nullable = false)[m
+[32m+[m[32m    private UsuarioEntity entityUsuarioEntity;[m
+[32m+[m[41m    [m
+[32m+[m[32m    @ManyToMany(mappedBy = "participantes")[m
+[32m+[m[32m    private Set<GrupoAcessoEntity> gruposAcesso = new HashSet<>();[m
+ [m
+     @OneToMany(mappedBy = "participante")[m
+ 	private List<EventoEntity> eventos; [m
+[36m@@ -42,22 +40,34 @@[m [mpublic class ParticipanteEntity implements Serializable{[m
+     public ParticipanteEntity() {[m
+     }[m
+ [m
+[31m-    public ParticipanteEntity(Long id_participante, String nome_completo, String cpf, String email, List<EventoEntity> eventos) {[m
+[31m-        this.id_participante = id_participante;[m
+[31m-        this.nome_completo = nome_completo;[m
+[31m-        this.cpf = cpf;[m
+[31m-        this.email = email;[m
+[31m-        this.eventos = eventos;[m
+[31m-    }[m
+[31m-[m
+[31m-    public ParticipanteEntity(String nome_completo, String cpf, String email) {[m
+[31m-         this.nome_completo = nome_completo;[m
+[31m-        this.cpf = cpf;[m
+[31m-        this.email = email;[m
+[31m-    }[m
+     [m
+[32m+[m	[32mpublic ParticipanteEntity(Long id_participante, UsuarioEntity entityUsuarioEntity, List<EventoEntity> eventos) {[m
+[32m+[m		[32msuper();[m
+[32m+[m		[32mthis.id_participante = id_participante;[m
+[32m+[m		[32mthis.entityUsuarioEntity = entityUsuarioEntity;[m
+[32m+[m		[32mthis.eventos = eventos;[m
+[32m+[m	[32m}[m
+[32m+[m[41m	[m
+[32m+[m[41m [m
+[32m+[m	[32mpublic Set<GrupoAcessoEntity> getGruposAcesso() {[m
+[32m+[m		[32mreturn gruposAcesso;[m
+[32m+[m	[32m}[m
+[32m+[m
+ [m
+[31m-    public Long getId_participante() {[m
+[32m+[m	[32mpublic void setGruposAcesso(Set<GrupoAcessoEntity> gruposAcesso) {[m
+[32m+[m		[32mthis.gruposAcesso = gruposAcesso;[m
+[32m+[m	[32m}[m
+[32m+[m
+[32m+[m
+[32m+[m	[32mpublic UsuarioEntity getEntityUsuarioEntity() {[m
+[32m+[m		[32mreturn entityUsuarioEntity;[m
+[32m+[m	[32m}[m
+[32m+[m
+[32m+[m	[32mpublic void setEntityUsuarioEntity(UsuarioEntity entityUsuarioEntity) {[m
+[32m+[m		[32mthis.entityUsuarioEntity = entityUsuarioEntity;[m
+[32m+[m	[32m}[m
+[32m+[m
+[32m+[m	[32mpublic Long getId_participante() {[m
+ 		return id_participante;[m
+ 	}[m
+ [m
+[36m@@ -65,25 +75,6 @@[m [mpublic class ParticipanteEntity implements Serializable{[m
+ 		this.id_participante = id_participante;[m
+ 	}[m
+ [m
+[31m-	public String getNome_completo() {[m
+[31m-        return nome_completo;[m
+[31m-    }[m
+[31m-    public void setNome_completo(String nome_completo) {[m
+[31m-        this.nome_completo = nome_completo;[m
+[31m-    }[m
+[31m-    public String getCpf() {[m
+[31m-        return cpf;[m
+[31m-    }[m
+[31m-    public void setCpf(String cpf) {[m
+[31m-        this.cpf = cpf;[m
+[31m-    }[m
+[31m-    public String getEmail() {[m
+[31m-        return email;[m
+[31m-    }[m
+[31m-    public void setEmail(String email) {[m
+[31m-        this.email = email;[m
+[31m-    }[m
+[31m-[m
+      public List<EventoEntity> getEventos() {[m
+ 		return eventos;[m
+ 	}[m
+[36m@@ -93,24 +84,6 @@[m [mpublic class ParticipanteEntity implements Serializable{[m
+ 	}[m
+ [m
+ [m
+[31m-    @Override[m
+[31m-    public int hashCode() {[m
+[31m-        return Objects.hash(cpf);[m
+[31m-    }[m
+[31m-[m
+[31m-    @Override[m
+[31m-    public boolean equals(Object obj) {[m
+[31m-        if (this == obj) return true;[m
+[31m-        if (obj == null || getClass() != obj.getClass()) return false;[m
+[31m-        ParticipanteEntity other = (ParticipanteEntity) obj;[m
+[31m-        return Objects.equals(cpf, other.cpf); [m
+[31m-    }[m
+[31m-[m
+[31m-    @Override[m
+[31m-    public String toString() {[m
+[31m-        return "Participante [id=" + id_participante + ", nome=" + nome_completo + ", cpf=" + cpf + ", email=" + email + "]";[m
+[31m-    }[m
+[31m-[m
+  [m
+ [m
+ [m
+[1mdiff --git a/src/main/java/com/campanha_incentivo/entities/UsuarioEntity.java b/src/main/java/com/campanha_incentivo/entities/UsuarioEntity.java[m
+[1mindex 0d633b3..024ad0a 100644[m
+[1m--- a/src/main/java/com/campanha_incentivo/entities/UsuarioEntity.java[m
+[1m+++ b/src/main/java/com/campanha_incentivo/entities/UsuarioEntity.java[m
+[36m@@ -49,7 +49,7 @@[m [mpublic class UsuarioEntity implements UserDetails,Serializable{[m
+         joinColumns = {@JoinColumn(name = "fk_usuario_id")},[m
+         inverseJoinColumns = {@JoinColumn(name = "fk_grupo_id")}[m
+     )[m
+[31m-    private Set<GropsAcessoEntity> gruposAcesso = new HashSet<>();[m
+[32m+[m[32m    private Set<GrupoAcessoEntity> gruposAcesso = new HashSet<>();[m
+     [m
+     public UsuarioEntity() {[m
+ 	}[m
+[36m@@ -132,12 +132,12 @@[m [mpublic class UsuarioEntity implements UserDetails,Serializable{[m
+ 		this.telefone2 = telefone2;[m
+ 	}[m
+ [m
+[31m-	public void setGruposAcesso(Set<GropsAcessoEntity> gruposAcesso) {[m
+[32m+[m	[32mpublic void setGruposAcesso(Set<GrupoAcessoEntity> gruposAcesso) {[m
+ 		this.gruposAcesso = gruposAcesso;[m
+ 	}[m
+ 	[m
+ [m
+[31m-	public Set<GropsAcessoEntity> getGruposAcesso() {[m
+[32m+[m	[32mpublic Set<GrupoAcessoEntity> getGruposAcesso() {[m
+ 		return gruposAcesso;[m
+ 	}[m
+ [m
+[1mdiff --git a/src/main/java/com/campanha_incentivo/repositories/GrupoAcessoRepository.java b/src/main/java/com/campanha_incentivo/repositories/GrupoAcessoRepository.java[m
+[1mindex bef4cc0..812a72c 100644[m
+[1m--- a/src/main/java/com/campanha_incentivo/repositories/GrupoAcessoRepository.java[m
+[1m+++ b/src/main/java/com/campanha_incentivo/repositories/GrupoAcessoRepository.java[m
+[36m@@ -5,12 +5,12 @@[m [mimport java.util.Optional;[m
+ import org.springframework.data.jpa.repository.JpaRepository;[m
+ import org.springframework.stereotype.Repository;[m
+ [m
+[31m-import com.campanha_incentivo.entities.GropsAcessoEntity;[m
+[32m+[m[32mimport com.campanha_incentivo.entities.GrupoAcessoEntity;[m
+ [m
+ [m
+ @Repository[m
+[31m-public interface GrupoAcessoRepository  extends JpaRepository<GropsAcessoEntity, Long>{[m
+[32m+[m[32mpublic interface GrupoAcessoRepository  extends JpaRepository<GrupoAcessoEntity, Long>{[m
+ [m
+[31m-	Optional<GropsAcessoEntity> findByNome(String roleAdmin);[m
+[32m+[m	[32mOptional<GrupoAcessoEntity> findByNome(String roleAdmin);[m
+ [m
+ }[m
+[1mdiff --git a/src/main/java/com/campanha_incentivo/services/UsuarioService.java b/src/main/java/com/campanha_incentivo/services/UsuarioService.java[m
+[1mindex c2c1fd5..be54944 100644[m
+[1m--- a/src/main/java/com/campanha_incentivo/services/UsuarioService.java[m
+[1m+++ b/src/main/java/com/campanha_incentivo/services/UsuarioService.java[m
+[36m@@ -14,7 +14,7 @@[m [mimport org.springframework.security.crypto.password.PasswordEncoder;[m
+ import org.springframework.stereotype.Service;[m
+ [m
+ import com.campanha_incentivo.dtos.UsuarioDTO;[m
+[31m-import com.campanha_incentivo.entities.GropsAcessoEntity;[m
+[32m+[m[32mimport com.campanha_incentivo.entities.GrupoAcessoEntity;[m
+ import com.campanha_incentivo.entities.UsuarioEntity;[m
+ import com.campanha_incentivo.exception.handler.ResourceExistsException;[m
+ import com.campanha_incentivo.exception.handler.ResourceNotFoundException;[m
+[36m@@ -52,7 +52,7 @@[m [mpublic class UsuarioService implements UserDetailsService{[m
+ 	        if(usuarioRepository.findByEmail(dto.email()).isPresent()) {[m
+ 	        	throw new RuntimeException("Email Ja cadastrado");[m
+ 	        }[m
+[31m-	        GropsAcessoEntity roleParticipante = acessoRepository.findByNome("ROLE_USUARIO")[m
+[32m+[m	[32m        GrupoAcessoEntity roleParticipante = acessoRepository.findByNome("ROLE_USUARIO")[m
+ 	        		.orElseThrow(()-> new RuntimeException("Role padrão não encontrado"));[m
+ 	        [m
+ 	        String senhaCripto = passwordEncoder.encode(dto.senha());[m
+[36m@@ -70,7 +70,7 @@[m [mpublic class UsuarioService implements UserDetailsService{[m
+         if(usuarioRepository.findByEmail(dto.email()).isPresent()) {[m
+         	throw new RuntimeException("Email Ja cadastrado");[m
+         }[m
+[31m-        GropsAcessoEntity roleParticipante = acessoRepository.findByNome("ROLE_GESTOR")[m
+[32m+[m[32m        GrupoAcessoEntity roleParticipante = acessoRepository.findByNome("ROLE_GESTOR")[m
+         		.orElseThrow(()-> new RuntimeException("Role padrão não encontrado"));[m
+         [m
+         String senhaCripto = passwordEncoder.encode(dto.senha());[m
