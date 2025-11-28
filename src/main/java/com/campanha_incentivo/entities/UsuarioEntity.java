@@ -1,12 +1,8 @@
 package com.campanha_incentivo.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,14 +10,14 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "TB_USUARIO")
-public class UsuarioEntity implements UserDetails,Serializable{
+public class UsuarioEntity implements Serializable{
     
     private static final long serialVersionUID = 1L;
     
@@ -141,23 +137,7 @@ public class UsuarioEntity implements UserDetails,Serializable{
 		return gruposAcesso;
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 
 	@Override

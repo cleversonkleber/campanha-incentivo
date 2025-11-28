@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import com.campanha_incentivo.dtos.CampanhaDto;
+import com.campanha_incentivo.dtos.request.CampanhaDto;
 import com.campanha_incentivo.entities.CampanhaEntity;
 import com.campanha_incentivo.exception.handler.ResourceNotFoundException;
 import com.campanha_incentivo.mapper.CampanhaMapper;

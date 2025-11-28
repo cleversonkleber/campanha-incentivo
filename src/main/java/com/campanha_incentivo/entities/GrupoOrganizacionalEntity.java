@@ -34,29 +34,22 @@ public class GrupoOrganizacionalEntity implements Serializable {
         joinColumns = @JoinColumn(name = "fk_grupo_id"), 
         inverseJoinColumns = @JoinColumn(name = "fk_participante_id")
     )
-    private Set<ParticipanteEntity> participantes = new HashSet<>();
+    private Set<UsuarioEntity> usuarioEntities = new HashSet<>();
     
     
 
 	public GrupoOrganizacionalEntity() {
 		super();
 	}
-	
-	
-	
 
-	public Set<ParticipanteEntity> getParticipantes() {
-		return participantes;
+	public Set<UsuarioEntity> getUsuarioEntities() {
+		return usuarioEntities;
 	}
 
 
-
-
-	public void setParticipantes(Set<ParticipanteEntity> participantes) {
-		this.participantes = participantes;
+	public void setUsuarioEntities(Set<UsuarioEntity> usuarioEntities) {
+		this.usuarioEntities = usuarioEntities;
 	}
-
-
 
 
 	public GrupoOrganizacionalEntity( String nome) {
@@ -67,9 +60,6 @@ public class GrupoOrganizacionalEntity implements Serializable {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getNome() {
 		return nome;

@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.campanha_incentivo.dtos.EventoDto;
+import com.campanha_incentivo.dtos.request.EventoDto;
 import com.campanha_incentivo.services.EventoService;
 
 

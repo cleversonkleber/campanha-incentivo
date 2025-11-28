@@ -37,8 +37,8 @@ public class EventoEntity implements Serializable {
     private Double pontosGerados;
 
     @ManyToOne
-    @JoinColumn(name = "id_participante")
-    private ParticipanteEntity participante;
+    @JoinColumn(name = "id_usuario")
+    private UsuarioEntity usuarioEntity;
     
     @ManyToOne
     @JoinColumn(name = "id_campanha", nullable = false)
@@ -49,33 +49,20 @@ public class EventoEntity implements Serializable {
     }
 
 
-	public EventoEntity(Long id_envento, LocalDateTime dataHoraOcorrencia, TipoEvento tipoEvento, Double valor,
-			String descricao, Double pontosGerados, ParticipanteEntity participante, CampanhaEntity campanha) {
-		this.id_envento = id_envento;
+	public EventoEntity(LocalDateTime dataHoraOcorrencia, TipoEvento tipoEvento, Double valor,
+			String descricao, Double pontosGerados, UsuarioEntity usuarioEntity, CampanhaEntity campanha) {
 		this.dataHoraOcorrencia = dataHoraOcorrencia;
 		this.tipoEvento = tipoEvento;
 		this.valor = valor;
 		this.descricao = descricao;
 		this.pontosGerados = pontosGerados;
-		this.participante = participante;
+		this.usuarioEntity = usuarioEntity;
 		this.campanha = campanha;
 	}
-
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 
 	public Long getId_envento() {
 		return id_envento;
 	}
-
-
-	public void setId_envento(Long id_envento) {
-		this.id_envento = id_envento;
-	}
-
 
 	public LocalDateTime getDataHoraOcorrencia() {
 		return dataHoraOcorrencia;
@@ -127,13 +114,16 @@ public class EventoEntity implements Serializable {
 	}
 
 
-	public ParticipanteEntity getParticipante() {
-		return participante;
+	
+
+
+	public UsuarioEntity getUsuarioEntity() {
+		return usuarioEntity;
 	}
 
 
-	public void setParticipante(ParticipanteEntity participante) {
-		this.participante = participante;
+	public void setUsuarioEntity(UsuarioEntity usuarioEntity) {
+		this.usuarioEntity = usuarioEntity;
 	}
 
 
@@ -178,7 +168,7 @@ public class EventoEntity implements Serializable {
 	public String toString() {
 		return "Evento [id_envento=" + id_envento + ", dataHoraOcorrencia=" + dataHoraOcorrencia + ", tipoEvento="
 				+ tipoEvento + ", valor=" + valor + ", descricao=" + descricao + ", pontosGerados=" + pontosGerados
-				+ ", participante=" + participante + ", campanha=" + campanha + "]";
+				+ ", participante=" + usuarioEntity + ", campanha=" + campanha + "]";
 	}
 
 

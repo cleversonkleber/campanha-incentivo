@@ -8,34 +8,35 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.campanha_incentivo.dtos.EventoDto;
+import com.campanha_incentivo.dtos.request.EventoDto;
 import com.campanha_incentivo.entities.CampanhaEntity;
 import com.campanha_incentivo.entities.EventoEntity;
-import com.campanha_incentivo.entities.ParticipanteEntity;
+import com.campanha_incentivo.entities.UsuarioEntity;
 import com.campanha_incentivo.exception.handler.ResourceNotFoundException;
 import com.campanha_incentivo.mapper.EventoMapper;
 import com.campanha_incentivo.repositories.CampanhaRepository;
 import com.campanha_incentivo.repositories.EventoRepository;
-import com.campanha_incentivo.repositories.ParticipanteRepository;
+import com.campanha_incentivo.repositories.GrupoOrganizacionalRepository;
+import com.campanha_incentivo.repositories.UsuarioRepository;
 
 @Service
 public class EventoService implements IService<EventoDto, Long>{
 
     
-
+	private UsuarioRepository usuarioRepository;
     private CampanhaRepository campanhaRepository;
     private EventoRepository eventoRepository;
-    private ParticipanteRepository participanteRepository;
+    private GrupoOrganizacionalRepository grupoOrganizacionalRepository;
     private EventoMapper eventoMapper;
     private Logger logger = Logger.getLogger(EventoService.class.getName());
     
 
     public EventoService(CampanhaRepository campanhaRepository, EventoRepository eventoRepository,
-			ParticipanteRepository participanteRepository, EventoMapper eventoMapper) {
+			GrupoOrganizacionalRepository grupoOrganizacionalRepository, EventoMapper eventoMapper) {
 		super();
 		this.campanhaRepository = campanhaRepository;
 		this.eventoRepository = eventoRepository;
-		this.participanteRepository = participanteRepository;
+		this.grupoOrganizacionalRepository = grupoOrganizacionalRepository;
 		this.eventoMapper = eventoMapper;
 	}
 
@@ -43,11 +44,11 @@ public class EventoService implements IService<EventoDto, Long>{
     public EventoDto criar(EventoDto dto) {
 		String nomeCampanhaNormalizado = dto.nomeCampanha().toUpperCase().toString();
 		
-        ParticipanteEntity participante = participanteRepository.findByCpf(dto.cpf_participante())
+        UsuarioEntity usuarioEntity = usuarioRepository.findByCpf(dto.cpf_usuario())
                 .orElseThrow(
                     ()-> new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "Participante com o CPF"+dto.cpf_participante() + " não encontrado!"
+                    "Usuário com o CPF"+dto.cpf_usuario() + " não encontrado!"
                 ));
 
         CampanhaEntity campanha = campanhaRepository.findByNome(nomeCampanhaNormalizado)
@@ -59,7 +60,7 @@ public class EventoService implements IService<EventoDto, Long>{
         
         EventoEntity evento = eventoMapper.toEntity(dto);
         evento.setCampanha(campanha);
-        evento.setParticipante(participante);
+        evento.setUsuarioEntity(usuarioEntity);
         
 
         EventoEntity eventoSalvo = eventoRepository.save(evento);
@@ -87,11 +88,11 @@ public class EventoService implements IService<EventoDto, Long>{
 
     @Override
     public EventoDto update(EventoDto dto) {
-    	   ParticipanteEntity participante = participanteRepository.findByCpf(dto.cpf_participante())
+    	   UsuarioEntity usuarioEntity = usuarioRepository.findByCpf(dto.cpf_usuario())
                    .orElseThrow(
                        ()-> new ResponseStatusException(
                        HttpStatus.NOT_FOUND,
-                       "Participante com o CPF"+dto.cpf_participante() + " não encontrado!"
+                       "Participante com o CPF"+dto.cpf_usuario() + " não encontrado!"
                    ));
 
            CampanhaEntity campanha = campanhaRepository.findByNome(dto.nomeCampanha().toString())
@@ -100,15 +101,15 @@ public class EventoService implements IService<EventoDto, Long>{
                        "Campanha com o nome"+dto.nomeCampanha() + " não encontrado!"
                    ));
            
-           EventoEntity eventoBd= eventoRepository.findById(dto.id())
+           EventoEntity eventoBd= eventoRepository.findById(dto.id_envento())
         		   .orElseThrow(
                            ()-> new ResponseStatusException(
                            HttpStatus.NOT_FOUND,
-                           "Participante com o CPF"+dto.cpf_participante() + " não encontrado!"
+                           "ID evento não encontrado"+dto.id_envento() + " não encontrado!"
                        ));
            
            eventoBd.setCampanha(campanha);
-           eventoBd.setParticipante(participante);
+           eventoBd.setUsuarioEntity(usuarioEntity);
            eventoBd.setDataHoraOcorrencia(dto.dataHoraOcorrencia());
            eventoBd.setDescricao(dto.descricao());
            eventoBd.setTipoEvento(dto.tipoEvento());

@@ -1,4 +1,4 @@
-package com.campanha_incentivo.dtos;
+package com.campanha_incentivo.dtos.request;
 
 import java.time.LocalDateTime;
 
