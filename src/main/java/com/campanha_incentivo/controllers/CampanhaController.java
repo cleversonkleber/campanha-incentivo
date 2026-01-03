@@ -20,7 +20,7 @@ import com.campanha_incentivo.dtos.request.CampanhaDto;
 import com.campanha_incentivo.services.CampanhaService;
 
 @RestController
-@RequestMapping("/campanha")
+@RequestMapping("/gestor")
 public class CampanhaController {
     
     @Autowired
@@ -28,6 +28,7 @@ public class CampanhaController {
     private Logger logger = Logger.getLogger(CampanhaController.class.getName());
 
     @PostMapping(
+    	value="/campanha",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -38,6 +39,7 @@ public class CampanhaController {
     }
 
     @GetMapping( 
+    	value="/campanhas",
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     public List<CampanhaDto> findAll() throws Exception{

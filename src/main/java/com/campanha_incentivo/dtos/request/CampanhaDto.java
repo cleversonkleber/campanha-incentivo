@@ -4,23 +4,19 @@ import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record CampanhaDto(
 		
-		@NotNull(message = "O ID da camapnha é obrigatório para atualização.")
-        Long id,
-        
         @NotBlank(message = "O nome da campanha é obrigatório.") 
         @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres.")
         String nome,
 
-        @NotNull(message = "A data de início é obrigatória.")
+        @NotBlank(message = "A data de início é obrigatória.")
         @FutureOrPresent(message = "A data de início não pode ser no passado.")
         LocalDateTime dataInicio,
 
-        @NotNull(message = "A data de término é obrigatória.")
+        @NotBlank(message = "A data de término é obrigatória.")
         @FutureOrPresent(message = "A data de término não pode ser no passado.") 
         LocalDateTime dataFim,
 
